@@ -1,6 +1,5 @@
-# Blackjack
-projet java Blackjack  
+# Projet en Java Blackjack
 Jeux blackjack coder en java avec:  
-un mode solo pour jouer quand on est seul sur la machine  
-mode multi local pour jouer a deux sur le meme ordinateur  
-mode multi en reseaux pour jouer avec des personne sur le meme reseaux  
+un mode solo 
+mode multi local pour jouer à deux sur le même ordinateur  
+mode multi en réseau pour jouer avec des personnes sur le même reseau  
