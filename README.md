@@ -1,4 +1,4 @@
-#Projet en Java Blackjack
+# Projet en Java Blackjack
 ## groupe 16: Sébastien Blacks & Humbert Meyers
 Jeux blackjack coder en java avec:  
 un mode solo 
