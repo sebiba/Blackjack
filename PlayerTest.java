@@ -14,14 +14,17 @@ public class PlayerTest {
 	}
 	@Test
 	public void test() {
-		amelie.mise(5);
+				amelie.mise(5);
 		assertEquals(145, amelie.getMoney(),0);
+		assertEquals("Amélie", amelie.getNom());
 		
 		benoit.mise(5);
 		assertEquals(0, benoit.getMoney(),0);
+		assertEquals("Benoit", benoit.getNom());
 		
 		humbert.mise(120);
 		assertEquals(0, humbert.getMoney(),0);
+		assertEquals("Humbert", humbert.getNom());
 	}
 
 }
