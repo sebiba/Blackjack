@@ -8,8 +8,9 @@ public class PlayerTest {
 	Player amelie,benoit,humbert;
 	@Before
 	public void setUp(){
-		amelie = new Player(150, "Amélie");
+		amelie = new Player(150, "AmÃ©lie");
 		benoit = new Player(0, "Benoit");
+		humbert = new Player(120, "HHumbert");
 	}
 	@Test
 	public void test() {
@@ -18,6 +19,9 @@ public class PlayerTest {
 		
 		benoit.mise(5);
 		assertEquals(0, benoit.getMoney(),0);
+		
+		humbert.mise(120);
+		assertEquals(0, humbert.getMoney(),0);
 	}
 
 }
