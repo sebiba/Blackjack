@@ -19,6 +19,7 @@ public class Carte {
 	
 	private final int famille;
 	private final int valeur;
+	private boolean usedCarte;
 	
 	/**
 	 * constructeur utilisé pour creer une carte
@@ -28,6 +29,7 @@ public class Carte {
 	public Carte(int valeur, int famille) {
 		this.valeur = valeur;
 		this.famille = famille;
+		this.usedCarte = false;
 	}
 
 	/**
@@ -82,6 +84,13 @@ public class Carte {
 	        default:  	return "??";
 		}
 	}
+	public boolean isUsed(){
+		return this.usedCarte;
+	}
+	
+	public void setUsed(){
+		this.usedCarte = true;
+	}
 	
 	/**
 	 * Concatenation de la valeur et de la 
@@ -90,3 +99,4 @@ public class Carte {
 		return getValeurString() + " de " + getFamilleString();
 	}
 }
+
