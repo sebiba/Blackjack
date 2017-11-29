@@ -18,7 +18,7 @@ public class Carte {
             			 	 ROI = 13;		 
 	
 	private final int famille;
-	private final int valeur;
+	private int valeur;
 	private boolean usedCarte;
 	
 	/**
@@ -46,6 +46,9 @@ public class Carte {
 	 */
 	public int getValeur() {
 		return valeur;
+	}
+	public void setValeur(int valeur){
+		this.valeur=valeur;
 	}
 	
 	/**

@@ -9,15 +9,22 @@ import java.io.InputStreamReader;
 public class Game{
 	private static int mise;
 	private int nbJoueurs;
+	private static boolean tour=true;
 	public static void main(String[] args) {
 		menu();
 	}
 	public static void solo(){
 		Player joueur = new Player(); //instantiation d'un joueur
 		Deck deck = new Deck();
-		System.out.print("le croupier distribue les cartes...");
-		pioche(joueur, deck);
-		joueur.toString();
+		System.out.println("le croupier distribue les cartes...");
+		joueur.main.ajouteCarte(deck);//carte de base
+		joueur.main.ajouteCarte(deck);//carte de base
+		System.out.println(joueur.main.toString());
+		do{
+			pioche(joueur, deck);
+			System.out.println(joueur.toString());
+		}while(tour==true);
+		System.out.println("checking result");
 		
 	}
 	public void multi(int nbJoueurs){
@@ -61,13 +68,11 @@ public class Game{
 	 */
 	public static void menu(){	 
 		System.out.println("Bienvenu sur la table de blackjack...");
-		System.out.println("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
-		String menu = enter();
+		String menu = enter("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
 		//System.out.println(menu);
 		switch(menu){
 			case "1":ReadFiles("rules.txt");
-					System.out.println("appuyez sur une touche pour continuer");
-					enter();
+					enter("appuyez sur une touche pour continuer");
 					System.out.println("--------------------------------------");//a remplacer par un clear console
 				break;
 			case "2":solo();
@@ -85,7 +90,8 @@ public class Game{
 	 * fonction lisant les entrées dans la console
 	 * @return String de ce que l'utilisateur à entré
 	 */
-	public static String enter(){
+	public static String enter(String texte){
+		System.out.println(texte);
 		String entre = "";
 		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -98,13 +104,12 @@ public class Game{
 	}
 	
 	public static void pioche(Player joueur, Deck deck){
-		System.out.println("voulez vous une carte? (y/n)");
-		String newCarte=enter();
+		String newCarte=enter("voulez vous une carte? (y/n) ");
 		switch(newCarte.toLowerCase()){
 		case "y":System.out.println("OK voici une carte");
 				joueur.main.ajouteCarte(deck);
 			break;
-		case "n":System.out.println("check result");
+		case "n":tour=false;
 			break;
 		default:System.out.println("mauvais choix...");
 				pioche(joueur, deck);

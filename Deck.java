@@ -17,6 +17,13 @@ public class Deck{
 	public Carte PiocheCarte(){
 		Random r = new Random();
 		Carte carte = deck[r.nextInt(51)+1];
+		while(carte.isUsed()==true){
+			r = new Random();
+			carte = deck[r.nextInt(51)+1];
+		}
+		if(carte.getValeur()>10){
+			carte.setValeur(10);
+		}
 		carte.setUsed();
 		//System.out.println("\ncarte: "+carte.getValeurString()+"\nfamille: "+carte.getFamilleString()+"\nis used: "+carte.isUsed());
 		return carte;

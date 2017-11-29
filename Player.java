@@ -20,7 +20,7 @@ public class Player{
 	public Player(){
 		this.money=1500;
 		this.win=false;
-		this.nom=JOptionPane.showInputDialog("entrez un nom pour le joueur");
+		this.nom=Game.enter("entrez le nom du joueur: ");
 		this.miseAct=0;
 	}
 	/**
@@ -98,6 +98,6 @@ public class Player{
 	}
 	
 	public String toString(){
-		return("main:\n"+main.toString()+"\nnom: "+this.nom+"\nmoney: "+this.money);
+		return(main.toString()+"\nnom: "+this.nom+"\nmoney: "+this.money);
 	}
 }
