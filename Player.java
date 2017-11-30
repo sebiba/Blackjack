@@ -66,8 +66,8 @@ public class Player{
 	 * atribue une valeur a money
 	 * @param money 
 	 */
-	public void setMoney(int money) {
-		this.money = money;
+	public void addMoney(int money) {
+		this.money += money;
 	}
 	/**
 	 * retourne true si le joueur a gagné la manche false si il a perdu

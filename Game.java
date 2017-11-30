@@ -8,16 +8,22 @@ import java.io.InputStreamReader;
 
 public class Game{
 	private static int mise;
-	private int nbJoueurs;
+	private static int nbJoueurs;
+	static int score[] ={0,0};//score[0]==score  score[1]=numéro du joueur gagnant;
 	public static void main(String[] args) {
 		menu();
 	}
+	
+	/**
+	 * fonction jouant une partie avec un seul joueur
+	 */
 	public static void solo(){
 		Player joueur = new Player(); //instantiation d'un joueur
 		Deck deck = new Deck();
+		joueur.mise(Integer.parseInt(enter(joueur.getNom()+" voulez-vous misez?(0 pour rien miser)")));//demande la mise a chaque joueur
+		joueur.main.ajouteCarte(deck);//carte de base
+		joueur.main.ajouteCarte(deck);//carte de base
 		System.out.println("le croupier distribue les cartes...");
-		joueur.main.ajouteCarte(deck);//carte de base
-		joueur.main.ajouteCarte(deck);//carte de base
 		System.out.println(joueur.main.toString(joueur));
 		do{
 			pioche(joueur, deck);
@@ -25,18 +31,25 @@ public class Game{
 		}while(joueur.isFin()==false);
 		
 		System.out.println("checking result...");
+		//result(joueur);
 		reset(joueur);
 		
 	}
 	public void multi(int nbJoueurs){
 
 	}
+	
+	/**
+	 * fonction jouant plusieur joueurs sur le meme pc
+	 * @param nbJoueurs de joueurs dans la partie
+	 */
 	public static void MultiLocal(int nbJoueurs){
 		Player joueur[] = new Player[nbJoueurs]; //instantiation d'un joueur
 		Deck deck = new Deck();
 		int cpt=0,nbfin = 0;
 		for(int i=0;i<nbJoueurs;i++){
-			joueur[i] = new Player();
+			joueur[i] = new Player();//instantiation de nbJoueurs joueur
+			joueur[i].mise(Integer.parseInt(enter(joueur[i].getNom()+" voulez-vous misez?(0 pour rien miser)")));//demande la mise a chaque joueur
 			joueur[i].main.ajouteCarte(deck);//carte de base
 			joueur[i].main.ajouteCarte(deck);//carte de base
 		}
@@ -44,6 +57,7 @@ public class Game{
 		do{
 			nbfin=0;
 			System.out.println(joueur[cpt].toString(joueur[cpt]));
+			System.out.println("mise en jeu :"+mise);
 			pioche(joueur[cpt], deck);
 			for(int i=0;i<nbJoueurs;i++){
 				if(joueur[i].isFin()==true){
@@ -58,13 +72,20 @@ public class Game{
 		}while(nbfin!=nbJoueurs);
 		
 		System.out.println("checking result...");
-		for(int i=0;i<nbJoueurs;i++){
-			System.out.println("nom: "+joueur[i].getNom()+"\tscore: "+joueur[i].main.getTot());
-		}
+		result(joueur);
+		System.out.println("le gagnant de cette partie est "+joueur[score[1]].getNom());
+		joueur[score[1]].addMoney(mise);
 	}
+	
+	/**
+	 * reset les parametres afin de bien recommencer une nouvelle partie
+	 * @param joueur
+	 */
 	public static void reset(Player joueur){
 		joueur.setFin(false);
+		mise=0;
 	}
+	
 	/**
 	 * fonction
 	 * @param choix
@@ -116,6 +137,7 @@ public class Game{
 		}
 		menu();
 	}
+	
 	/**
 	 * fonction lisant les entrées dans la console
 	 * @return String de ce que l'utilisateur à entré
@@ -132,17 +154,35 @@ public class Game{
 		return entre;
 	}
 	
+	/**
+	 * fonction gerant la pioche de chaque joueur
+	 * @param joueur devant piocher
+	 * @param deck de la partie
+	 */
 	public static void pioche(Player joueur, Deck deck){
-		String newCarte=enter("voulez vous une carte? (y/n) ");
-		switch(newCarte.toLowerCase()){
-		case "y":System.out.println("OK voici une carte");
-				joueur.main.ajouteCarte(deck);
-			break;
-		case "n":joueur.setFin(true);
-			break;
-		default:System.out.println("mauvais choix...");
-				pioche(joueur, deck);
-			break;
+		if(joueur.isFin()==false){
+			String newCarte=enter("voulez vous une carte? (y/n) ");
+			switch(newCarte.toLowerCase()){
+			case "y":System.out.println("OK voici une carte");
+					joueur.main.ajouteCarte(deck);
+				break;
+			case "n":joueur.setFin(true);
+				break;
+			default:System.out.println("mauvais choix...");
+					pioche(joueur, deck);
+				break;
+			}
+		}
+	}
+	
+	public static void result(Player joueur[]){
+		for(int i=0;i<nbJoueurs;i++){
+			System.out.println("nom: "+joueur[i].getNom()+"\tscore: "+joueur[i].main.getTot());
+			reset(joueur[i]);
+			if(score[0]<joueur[i].main.getTot()){
+				score[0]=joueur[i].main.getTot();
+				score[1]=i;
+			}
 		}
 	}
 	public static int getMise() {
