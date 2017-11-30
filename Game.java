@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import reseaux.Chat;
+import reseaux.ChatConsole;
 
 public class Game{
 	private static int mise;
@@ -42,8 +44,11 @@ public class Game{
 		reset(joueur);
 		
 	}
-	public void multi(int nbJoueurs){
-
+	
+	public static void multi(int nbJoueurs) throws IOException{
+		Player joueur= new Player();
+		reseaux.ChatConsole.ChatConsole(joueur);//connection a l'autre
+		
 	}
 	
 	/**
@@ -97,7 +102,8 @@ public class Game{
 	 */
 	public static void reset(Player joueur){
 		joueur.setFin(false);
-		mise=0;
+		setMise(0);
+		joueur.main.setAsreturn(0);
 	}
 	
 	/**
@@ -132,6 +138,7 @@ public class Game{
 	 */
 	public static void menu(){	 
 		System.out.println("Bienvenu sur la table de blackjack...");
+		int nbrJoueur=0;
 		String menu = enter("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
 		//System.out.println(menu);
 		switch(menu){
@@ -141,10 +148,16 @@ public class Game{
 				break;
 			case "2":solo();
 				break;
-			case "3":int nbrJoueur = Integer.parseInt(enter("combien de joueurs vont jouer?"));
+			case "3":nbrJoueur = Integer.parseInt(enter("combien de joueurs vont jouer?"));
 					MultiLocal(nbrJoueur);
 				break;
-			case "4":
+			case "4":nbrJoueur=2;
+					try {
+						multi(nbrJoueur);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				break;
 			default:System.out.println("ce n'est pas un choix valable.");
 				break;

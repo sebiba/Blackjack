@@ -14,7 +14,7 @@ public class Player{
 	private boolean win;
 	private String nom;
 	private int miseAct;
-	Hand main = new Hand();
+	public Hand main = new Hand();
 	/**
 	 * constructeur sans argument de la classe
 	 */
@@ -103,6 +103,21 @@ public class Player{
 	}
 	public void setFin(boolean fin) {
 		this.fin = fin;
+	}
+	public int getMiseAct() {
+		return miseAct;
+	}
+	public void setMiseAct(int miseAct) {
+		this.miseAct = miseAct;
+	}
+	public Hand getMain() {
+		return main;
+	}
+	public void setMain(Hand main) {
+		this.main = main;
+	}
+	public void setMoney(int money) {
+		this.money = money;
 	}
 	public String toString(Player joueur){
 		return(main.toString(joueur)+"\nnom: "+joueur.nom+"\nmoney: "+joueur.money);
