@@ -20,9 +20,16 @@ public class Game{
 	public static void solo(){
 		Player joueur = new Player(); //instantiation d'un joueur
 		Deck deck = new Deck();
-		joueur.mise(Integer.parseInt(enter(joueur.getNom()+" voulez-vous misez?(0 pour rien miser)")));//demande la mise a chaque joueur
+		boolean isNum = false;
 		joueur.main.ajouteCarte(deck);//carte de base
 		joueur.main.ajouteCarte(deck);//carte de base
+		do{
+			String mise = enter(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
+			isNum= isNumeric(mise);
+			if(isNum){
+				joueur.mise(Integer.parseInt(mise));
+			}
+		}while(isNum==false);
 		System.out.println("le croupier distribue les cartes...");
 		System.out.println(joueur.main.toString(joueur));
 		do{
@@ -48,8 +55,15 @@ public class Game{
 		Deck deck = new Deck();
 		int cpt=0,nbfin = 0;
 		for(int i=0;i<nbJoueurs;i++){
+			boolean isNum = false;
 			joueur[i] = new Player();//instantiation de nbJoueurs joueur
-			joueur[i].mise(Integer.parseInt(enter(joueur[i].getNom()+" voulez-vous misez?(0 pour rien miser)")));//demande la mise a chaque joueur
+			do{
+				String mise = enter(joueur[i].getNom()+" vous avez "+joueur[i].getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
+				isNum= isNumeric(mise);
+				if(isNum){
+					joueur[i].mise(Integer.parseInt(mise));
+				}
+			}while(isNum==false);
 			joueur[i].main.ajouteCarte(deck);//carte de base
 			joueur[i].main.ajouteCarte(deck);//carte de base
 		}
@@ -185,6 +199,21 @@ public class Game{
 			}
 		}
 	}
+	
+	public static boolean isNumeric(String str){
+		int isnum = 0;
+		for(int i=0;i<str.length();i++){
+			if(Character.isDigit(str.charAt(i))){
+				isnum+=1;
+			}
+		}
+		if(isnum==str.length()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public static int getMise() {
 		return mise;
 	}
