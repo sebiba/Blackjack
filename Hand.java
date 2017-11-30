@@ -5,6 +5,7 @@ public class Hand{
 	private boolean depasse = false;
 	private Carte cartes []=new Carte[12];
 	private int as = 0;
+	private int tot;
 	public Hand(){
 		
 	}
@@ -12,7 +13,7 @@ public class Hand{
 		cartes[nbrCartes]= deck.PiocheCarte();
 		nbrCartes+=1;
 	}
-	public String toString(){
+	public String toString(Player joueur){
 		String string="";
 		int tot=0;
 		for(int cpt=0;cpt<nbrCartes;cpt++){
@@ -27,8 +28,10 @@ public class Hand{
 		}
 		if(tot>21){
 			System.out.println("FINIS");
+			joueur.setFin(true);
 		}
 		string+=("total: "+tot+"\n");
+		this.tot=tot;
 		return string;
 	}
 	
@@ -44,5 +47,35 @@ public class Hand{
 			return cptas;
 		}
 		return 0;
+	}
+	public int getNbrCartes() {
+		return nbrCartes;
+	}
+	public void setNbrCartes(int nbrCartes) {
+		this.nbrCartes = nbrCartes;
+	}
+	public boolean isDepasse() {
+		return depasse;
+	}
+	public void setDepasse(boolean depasse) {
+		this.depasse = depasse;
+	}
+	public Carte[] getCartes() {
+		return cartes;
+	}
+	public void setCartes(Carte[] cartes) {
+		this.cartes = cartes;
+	}
+	public int getAs() {
+		return as;
+	}
+	public void setAs(int as) {
+		this.as = as;
+	}
+	public int getTot() {
+		return tot;
+	}
+	public void setTot(int tot) {
+		this.tot = tot;
 	}
 }

@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 public class Game{
 	private static int mise;
 	private int nbJoueurs;
-	private static boolean tour=true;
 	public static void main(String[] args) {
 		menu();
 	}
@@ -19,22 +18,52 @@ public class Game{
 		System.out.println("le croupier distribue les cartes...");
 		joueur.main.ajouteCarte(deck);//carte de base
 		joueur.main.ajouteCarte(deck);//carte de base
-		System.out.println(joueur.main.toString());
+		System.out.println(joueur.main.toString(joueur));
 		do{
 			pioche(joueur, deck);
-			System.out.println(joueur.toString());
-		}while(tour==true);
-		System.out.println("checking result");
+			System.out.println(joueur.toString(joueur));
+		}while(joueur.isFin()==false);
+		
+		System.out.println("checking result...");
+		reset(joueur);
 		
 	}
 	public void multi(int nbJoueurs){
-		
+
 	}
-	public void MultiLocal(int nbJoueurs){
+	public static void MultiLocal(int nbJoueurs){
+		Player joueur[] = new Player[nbJoueurs]; //instantiation d'un joueur
+		Deck deck = new Deck();
+		int cpt=0,nbfin = 0;
+		for(int i=0;i<nbJoueurs;i++){
+			joueur[i] = new Player();
+			joueur[i].main.ajouteCarte(deck);//carte de base
+			joueur[i].main.ajouteCarte(deck);//carte de base
+		}
+		System.out.println("le croupier distribue les cartes...");
+		do{
+			nbfin=0;
+			System.out.println(joueur[cpt].toString(joueur[cpt]));
+			pioche(joueur[cpt], deck);
+			for(int i=0;i<nbJoueurs;i++){
+				if(joueur[i].isFin()==true){
+					nbfin+=1;
+				}
+			}
+			if(cpt+1==nbJoueurs){
+				cpt=0;
+			}else{
+				cpt++;
+			}
+		}while(nbfin!=nbJoueurs);
 		
+		System.out.println("checking result...");
+		for(int i=0;i<nbJoueurs;i++){
+			System.out.println("nom: "+joueur[i].getNom()+"\tscore: "+joueur[i].main.getTot());
+		}
 	}
-	public void reset(){
-		
+	public static void reset(Player joueur){
+		joueur.setFin(false);
 	}
 	/**
 	 * fonction
@@ -77,7 +106,8 @@ public class Game{
 				break;
 			case "2":solo();
 				break;
-			case "3":
+			case "3":int nbrJoueur = Integer.parseInt(enter("combien de joueurs vont jouer?"));
+					MultiLocal(nbrJoueur);
 				break;
 			case "4":
 				break;
@@ -97,7 +127,6 @@ public class Game{
 		try {
 			entre = keyboard.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return entre;
@@ -109,11 +138,25 @@ public class Game{
 		case "y":System.out.println("OK voici une carte");
 				joueur.main.ajouteCarte(deck);
 			break;
-		case "n":tour=false;
+		case "n":joueur.setFin(true);
 			break;
 		default:System.out.println("mauvais choix...");
 				pioche(joueur, deck);
 			break;
 		}
 	}
+	public static int getMise() {
+		return mise;
+	}
+	public static void setMise(int mise) {
+		Game.mise = mise;
+	}
+	public int getNbJoueurs() {
+		return nbJoueurs;
+	}
+	public void setNbJoueurs(int nbJoueurs) {
+		this.nbJoueurs = nbJoueurs;
+	}
+	
+	
 }

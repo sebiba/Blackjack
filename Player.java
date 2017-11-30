@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 public class Player{
 	private int money;
+	private boolean fin=false;
 	private boolean win;
 	private String nom;
 	private int miseAct;
@@ -97,7 +98,13 @@ public class Player{
 		this.nom = nom;
 	}
 	
-	public String toString(){
-		return(main.toString()+"\nnom: "+this.nom+"\nmoney: "+this.money);
+	public boolean isFin() {
+		return fin;
+	}
+	public void setFin(boolean fin) {
+		this.fin = fin;
+	}
+	public String toString(Player joueur){
+		return(main.toString(joueur)+"\nnom: "+joueur.nom+"\nmoney: "+joueur.money);
 	}
 }
