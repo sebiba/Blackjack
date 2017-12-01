@@ -16,7 +16,7 @@ public class Hand{
 	
 	/**
 	 * fonction ajoutant une carte au joueur en appelant la fonction PiocheCarte de Deck
-	 * @param object deck represantant le deck d'où on tire la carte
+	 * @param object deck represantant le deck d'oÃ¹ on tire la carte
 	 */
 	public void ajouteCarte(Deck deck){
 		cartes[nbrCartes]= deck.PiocheCarte();
@@ -58,7 +58,7 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction calculant si il y a un as en plus du tour précédant
+	 * fonction calculant si il y a un as en plus du tour prÃ©cÃ©dant
 	 * @return le nombre d'as en plus
 	 */
 	public int isas(){
@@ -85,7 +85,7 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction settant a nbrCartes la valeur passé en parametre
+	 * fonction settant a nbrCartes la valeur passÃ© en parametre
 	 * @param nouveau nbrCartes que l'on attribue a un joueurs 
 	 */
 	public void setNbrCartes(int nbrCartes) {
@@ -102,7 +102,7 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction settant un boolean passé en paremetre a depasse
+	 * fonction settant un boolean passÃ© en paremetre a depasse
 	 * @param depasse boolean
 	 */
 	public void setDepasse(boolean depasse) {
@@ -134,8 +134,8 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction settant a as la valeur passé en parametre
-	 * @param valeur int as a atribué a as
+	 * fonction settant a as la valeur passÃ© en parametre
+	 * @param valeur int as a atribuÃ© a as
 	 */
 	public void setAs(int as) {
 		this.as = as;
@@ -150,7 +150,7 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction settant une valeur passée en parametre au total du joueur
+	 * fonction settant une valeur passÃ©e en parametre au total du joueur
 	 * @param tot a attribue au jouer
 	 */
 	public void setTot(int tot) {
@@ -158,7 +158,7 @@ public class Hand{
 	}
 	
 	/**
-	 * fonction retournant les as valant encore 11 et qui n'ont pas été reduit a 1
+	 * fonction retournant les as valant encore 11 et qui n'ont pas Ã©tÃ© reduit a 1
 	 * @return la valeur de asreturn
 	 */
 	public int getAsreturn() {
