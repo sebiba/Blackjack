@@ -45,6 +45,11 @@ public class Game{
 		
 	}
 	
+	/**
+	 * fonction jouant une partie avec quelqu'un en reseaux
+	 * @param nbJoueurs nombre de joueurs sur la partie
+	 * @throws IOException
+	 */
 	public static void multi(int nbJoueurs) throws IOException{
 		Player joueur= new Player();
 		reseaux.ChatConsole.ChatConsole(joueur);//connection a l'autre
@@ -107,8 +112,8 @@ public class Game{
 	}
 	
 	/**
-	 * fonction
-	 * @param choix
+	 * fonction ajoutant la mise passée en parametre de chaque joueur a la mise de la partie 
+	 * @param choix mise du joueur
 	 */
 	public static void addMise(int choix){
 		mise+=choix;
@@ -202,6 +207,10 @@ public class Game{
 		}
 	}
 	
+	/**
+	 * fonction calculant les score de chaque joueur de la partie
+	 * @param tableau de joueur de la partie en cours
+	 */
 	public static void result(Player joueur[]){
 		for(int i=0;i<nbJoueurs;i++){
 			System.out.println("nom: "+joueur[i].getNom()+"\tscore: "+joueur[i].main.getTot());
@@ -213,6 +222,12 @@ public class Game{
 		}
 	}
 	
+	/**
+	 * verifie si la String passée en parametre est numérique
+	 * @param str String que l'on veut passer en parametre
+	 * @return true si la String est constitué que de chiffre
+	 * @return false si la String a un seul charactere non numérique
+	 */
 	public static boolean isNumeric(String str){
 		int isnum = 0;
 		for(int i=0;i<str.length();i++){
@@ -227,15 +242,34 @@ public class Game{
 		}
 	}
 	
+	/**
+	 * fonction retournant la mise de la partie
+	 * @return la mise de la partie
+	 */
 	public static int getMise() {
 		return mise;
 	}
+	
+	/**
+	 * fonction settant a mise la valeur passé en parametre
+	 * @param valeur que l'on veut afecter a la mise de la partie
+	 */
 	public static void setMise(int mise) {
 		Game.mise = mise;
 	}
+	
+	/**
+	 * fonction retournant le nombre de joueur inscrit^a la partie en cours
+	 * @return le nombre de joueur inscrit a la partie en cours
+	 */
 	public int getNbJoueurs() {
 		return nbJoueurs;
 	}
+	
+	/**
+	 * fonction settant a nbJoueurs la valeur passé en parametre
+	 * @param nombre de joueurs que l'on veut inscrire a la partie
+	 */
 	public void setNbJoueurs(int nbJoueurs) {
 		this.nbJoueurs = nbJoueurs;
 	}

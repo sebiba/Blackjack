@@ -5,6 +5,10 @@ import java.util.Random;
 public class Deck{
 	private int nbrCarteDepart;
 	Carte[] deck = new Carte[52];
+	
+	/**constructeur du deck de 52 object cartes
+	 * 
+	 */
 	public Deck(){
 		int i = 0;
 		for (int cpt=0;cpt<4;cpt++){//boucle 4 familles
@@ -14,6 +18,11 @@ public class Deck{
 			}
 		}
 	}
+	/**
+	 * fonction simulant la pioche d'une carte dans le deck
+	 * affecte la valeur true a la var isUsed de la carte pour eviter qu'elle resorte
+	 * @return la carte tirée
+	 */
 	public Carte PiocheCarte(){
 		Random r = new Random();
 		Carte carte = deck[r.nextInt(51)+1];
@@ -32,6 +41,9 @@ public class Deck{
 		}*/
 	}
 	
+	/**
+	 * renvois une chaire de Charactere decrivant les cartes du jeux
+	 */
 	public String toString(){
 		String string = "";
 		for(int i=0;i<52;i++){
