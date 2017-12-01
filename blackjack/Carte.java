@@ -3,7 +3,7 @@ package blackjack;
 /**
  * Groupe 16 - Blackjack
  * @author Humbert Meyers
- * Cette classe représente une carte à jouer avec une valeur et une famille.
+ * Cette classe reprÃ©sente une carte Ã  jouer avec une valeur et une famille.
  */
 public class Carte {
 	
@@ -12,9 +12,9 @@ public class Carte {
             				 CARREAUX = 2,
             				 TREFLES = 3;
 	
-	private final static int AS = 1,        //   Codes pour les cartes non numérique.
-            				 VALET = 11,	//   Les cartes de 2 à 10 ont déja un
-            				 DAME = 12,		//   code numérique.
+	private final static int AS = 1,        //   Codes pour les cartes non numÃ©rique.
+            				 VALET = 11,	//   Les cartes de 2 Ã  10 ont dÃ©ja un
+            				 DAME = 12,		//   code numÃ©rique.
             			 	 ROI = 13;		 
 	
 	private final int famille;
@@ -22,7 +22,7 @@ public class Carte {
 	private boolean usedCarte;
 	
 	/**
-	 * constructeur utilisé pour creer une carte
+	 * constructeur utilisÃ© pour creer une carte
 	 * @param valeur  	La valeur de la carte
 	 * @param famille	La famille de la carte
 	 */
@@ -33,7 +33,7 @@ public class Carte {
 	}
 
 	/**
-	 * Reçoit la famille de la carte
+	 * ReÃ§oit la famille de la carte
 	 * @return la famille de la carte
 	 */
 	public int getFamille() {
@@ -41,7 +41,7 @@ public class Carte {
 	}
 
 	/**
-	 * Reçoit la valeur de la carte
+	 * ReÃ§oit la valeur de la carte
 	 * @return la valeur de la carte
 	 */
 	public int getValeur() {
@@ -93,8 +93,8 @@ public class Carte {
 	}
 	/**
 	 * fonction retournant
-	 * @return true si la carte est déjà utilisée
-	 * @return false si la carte est pas encore utilisée
+	 * @return true si la carte est dÃ©jÃ  utilisÃ©e
+	 * @return false si la carte est pas encore utilisÃ©e
 	 */
 	public boolean isUsed(){
 		return this.usedCarte;
