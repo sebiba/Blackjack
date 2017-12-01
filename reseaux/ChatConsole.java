@@ -54,9 +54,10 @@ public class ChatConsole {
 			chat.sendMessage(msg[0]);
 			chat.sendMessage(msg[1]);
 			chat.sendMessage(msg[2]);
+			chat.sendMessage(msg[3]);
 		}else{
 			Deck deckClient = new Deck();
-			for(int i=0;i<3;i++){
+			for(int i=0;i<4;i++){
 				String msg = chat.waitForMessage();
 				System.out.println("client recoit: "+msg);
 			}
