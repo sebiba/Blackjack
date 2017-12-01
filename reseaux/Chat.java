@@ -41,11 +41,11 @@ public class Chat {
 	 * @return le message reçu de l'interlocuteur
 	 * @exception IO Exception en cas d'erreur de transmission
 	 */
-	public String[] waitForMessage() throws IOException {
+	public String waitForMessage() throws IOException {
         //TODO
-		Object str = null;
+		String str = null;
 		str = in.readLine();
-		return (String[]) str;
+		return str;
 	}
 	/**
 	 * Permet l'établissement d'une connexion avec un hôte distant
