@@ -4,8 +4,8 @@ import blackjack.Game;
 import javax.swing.JOptionPane;
 /**
  * groupe 16 Blackjack
- * @author Sébastien Blacks
- *cette classe représente un joueur de blackjack ayant de l'argent un nom et une mise
+ * @author SÃ©bastien Blacks
+ *cette classe reprÃ©sente un joueur de blackjack ayant de l'argent un nom et une mise
  */
 
 public class Player{
@@ -26,7 +26,7 @@ public class Player{
 	}
 	/**
 	 * constructeur avec comme argument
-	 * @param money l'argent donné a la personne en début de partie
+	 * @param money l'argent donnÃ© a la personne en dÃ©but de partie
 	 * @param nom du joueur
 	 */
 	public Player(int money, String nom){
@@ -53,7 +53,7 @@ public class Player{
 	}
 	
 	/**
-	 * fonction permetant au joueur de piocher une carte du deck passé en parametre
+	 * fonction permetant au joueur de piocher une carte du deck passÃ© en parametre
 	 * @param deck avec lequel joue le joueur
 	 */
 	public void recoitCarte(Deck deck){
@@ -74,14 +74,14 @@ public class Player{
 		this.money += money;
 	}
 	/**
-	 * retourne true si le joueur a gagné la manche false si il a perdu
+	 * retourne true si le joueur a gagnÃ© la manche false si il a perdu
 	 * @return
 	 */
 	public boolean isWin() {
 		return win;
 	}
 	/**
-	 * atribue un valeur booléenne a win 
+	 * atribue un valeur boolÃ©enne a win 
 	 * @param win true si gagnant false si perdant
 	 */
 	public void setWin(boolean win) {
@@ -153,7 +153,7 @@ public class Player{
 	
 	/**
 	 * fonction attribuant une valeur au portefeuille du joueur
-	 * @param money int reprécentant une valeur pour le portefeuille du joueur
+	 * @param money int reprÃ©centant une valeur pour le portefeuille du joueur
 	 */
 	public void setMoney(int money) {
 		this.money = money;
