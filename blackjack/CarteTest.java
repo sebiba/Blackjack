@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Groupe 16 - Blackjack
  * @author Humbert Meyers
- * Cette classe représente le test JUnit pour la classe Carte.
+ * Cette classe reprÃ©sente le test JUnit pour la classe Carte.
  */
 public class CarteTest {
 	Carte premiereCarte, deuxiemeCarte, troisiemeCarte;
