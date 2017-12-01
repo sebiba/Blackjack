@@ -21,7 +21,7 @@ public class Deck{
 	/**
 	 * fonction simulant la pioche d'une carte dans le deck
 	 * affecte la valeur true a la var isUsed de la carte pour eviter qu'elle resorte
-	 * @return la carte tirée
+	 * @return la carte tirÃ©e
 	 */
 	public Carte PiocheCarte(){
 		Random r = new Random();
