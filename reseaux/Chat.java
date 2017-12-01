@@ -1,15 +1,19 @@
 package reseaux;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Chat {
-	ObjectInputStream in; 
-	ObjectOutputStream out;
+	BufferedReader in; 
+	PrintWriter out;
 	Socket socket;
 	ServerSocket s;
 	/**
@@ -27,10 +31,9 @@ public class Chat {
 	 * Envoie le messages msg à l'interlocuteur
 	 * @param msg un message
 	 */
-	public void sendMessage(String[] msg) throws IOException {
+	public void sendMessage(String msg) {
 		//TODO
-		out.writeObject(msg);
-		out.flush();
+		out.println(msg);
 	}
 
 	/**
@@ -41,12 +44,7 @@ public class Chat {
 	public String[] waitForMessage() throws IOException {
         //TODO
 		Object str = null;
-		try {
-			str = in.readObject();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		str = in.readLine();
 		return (String[]) str;
 	}
 	/**
@@ -64,8 +62,8 @@ public class Chat {
 		}else{
 			socket = new Socket(addr,port);
 		}
-		in = new ObjectInputStream(socket.getInputStream());
-		out = new ObjectOutputStream(socket.getOutputStream());
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
 	}
 	/**
 	 * Ferme tous les flux d'une connexion établie.
