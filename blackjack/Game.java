@@ -11,7 +11,7 @@ import reseaux.ChatConsole;
 public class Game{
 	private static int mise;
 	private static int nbJoueurs;
-	static int score[] ={0,0};//score[0]==score  score[1]=numÃ©ro du joueur gagnant;
+	static int score[] ={0,0};//score[0]==score  score[1]=numéro du joueur gagnant;
 	public static void main(String[] args) {
 		menu();
 	}
@@ -112,7 +112,7 @@ public class Game{
 	}
 	
 	/**
-	 * fonction ajoutant la mise passÃ©e en parametre de chaque joueur a la mise de la partie 
+	 * fonction ajoutant la mise passée en parametre de chaque joueur a la mise de la partie 
 	 * @param choix mise du joueur
 	 */
 	public static void addMise(int choix){
@@ -139,12 +139,12 @@ public class Game{
 	}
 	
 	/**
-	 * gÃ¨re le menu en mode console
+	 * gère le menu en mode console
 	 */
 	public static void menu(){	 
 		System.out.println("Bienvenu sur la table de blackjack...");
 		int nbrJoueur=0;
-		String menu = enter("1)rÃ¨gles du jeux\n2)partie en solo\n3)partie a plusieurs sur le mÃªme pc\n4)multi joueur en rÃ©seaux");
+		String menu = enter("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
 		//System.out.println(menu);
 		switch(menu){
 			case "1":ReadFiles("rules.txt");
@@ -171,11 +171,11 @@ public class Game{
 	}
 	
 	/**
-	 * fonction lisant les entrÃ©es dans la console
-	 * @return String de ce que l'utilisateur Ã  entrÃ©
+	 * fonction lisant les entrées dans la console
+	 * @return String de ce que l'utilisateur à entré
 	 */
 	public static String enter(String texte){
-		System.out.println(texte);
+		System.out.print(texte);
 		String entre = "";
 		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 		try {
@@ -223,10 +223,10 @@ public class Game{
 	}
 	
 	/**
-	 * verifie si la String passÃ©e en parametre est numÃ©rique
+	 * verifie si la String passée en parametre est numérique
 	 * @param str String que l'on veut passer en parametre
-	 * @return true si la String est constituÃ© que de chiffre
-	 * @return false si la String a un seul charactere non numÃ©rique
+	 * @return true si la String est constitué que de chiffre
+	 * @return false si la String a un seul charactere non numérique
 	 */
 	public static boolean isNumeric(String str){
 		int isnum = 0;
@@ -251,7 +251,7 @@ public class Game{
 	}
 	
 	/**
-	 * fonction settant a mise la valeur passÃ© en parametre
+	 * fonction settant a mise la valeur passé en parametre
 	 * @param valeur que l'on veut afecter a la mise de la partie
 	 */
 	public static void setMise(int mise) {
@@ -267,7 +267,7 @@ public class Game{
 	}
 	
 	/**
-	 * fonction settant a nbJoueurs la valeur passÃ© en parametre
+	 * fonction settant a nbJoueurs la valeur passé en parametre
 	 * @param nombre de joueurs que l'on veut inscrire a la partie
 	 */
 	public void setNbJoueurs(int nbJoueurs) {
