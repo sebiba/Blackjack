@@ -12,7 +12,7 @@ public class Chat {
 	ObjectOutputStream out;
 	Socket socket;
 	ServerSocket s;
-	/*
+	/**
 	 * Constructeur.  Permet d'initialiser le chat en établissant la 
 	 * connection avec un interlocuteur situé sur la même machine. 
 	 * @param isServer : si true, l'instance est un serveur et se met en attente d'une connexion
@@ -23,7 +23,7 @@ public class Chat {
 		connect(isServer, port, ip);
 	}
 
-	/*
+	/**
 	 * Envoie le messages msg à l'interlocuteur
 	 * @param msg un message
 	 */
@@ -33,7 +33,7 @@ public class Chat {
 		out.flush();
 	}
 
-	/*
+	/**
 	 * Attend le prochain message de l'interlocuteur
 	 * @return le message reçu de l'interlocuteur
 	 * @exception IO Exception en cas d'erreur de transmission
@@ -49,7 +49,7 @@ public class Chat {
 		}
 		return (String[]) str;
 	}
-	/*
+	/**
 	 * Permet l'établissement d'une connexion avec un hôte distant
 	 * @param isServer : si true, l'instance est un serveur et se met en attente d'une connexion
 	 * @port le numéro de port sur lequel établir la connexion
@@ -67,7 +67,7 @@ public class Chat {
 		in = new ObjectInputStream(socket.getInputStream());
 		out = new ObjectOutputStream(socket.getOutputStream());
 	}
-	/*
+	/**
 	 * Ferme tous les flux d'une connexion établie.
 	 * @exception IOException en cas d'erreur dans la fermeture de connexion
 	 */

@@ -11,6 +11,11 @@ import reseaux.Chat;
 
 
 public class ChatConsole {
+	/**
+	 * fonction lancant la communication reseaux
+	 * @param joueur local dela partie
+	 * @throws IOException 
+	 */
 	public static void ChatConsole(blackjack.Player joueur) throws IOException{
 		String eberge = blackjack.Game.enter("heberger vous la partie?(y/n): ");
 		boolean isServer=false;
@@ -60,6 +65,11 @@ public class ChatConsole {
 		}
 	}
 	
+	/**
+	 * fonction jouant une partie en reseaux 
+	 * @param joueur locale de la partie
+	 * @param deck utiliser localemnet
+	 */
 	public static void launch(Player joueur, Deck deck){
 		boolean isNum = false;
 		joueur.main.ajouteCarte(deck);//carte de base
@@ -73,6 +83,11 @@ public class ChatConsole {
 		}while(isNum==false);
 	}
 	
+	/**
+	 * fonction convertant une carte en String
+	 * @param carte a convertir en String
+	 * @return String de carte
+	 */
 	public static String tabToString(Carte carte){
 		String tabString = null;
 		tabString=carte.toString();
