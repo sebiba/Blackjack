@@ -47,6 +47,7 @@ public class ChatConsole {
 		System.out.println(sl);
 		*/
 		if(isServer){
+			//-----------------------------------------serveur---------------------------------------------
 			Deck deckHeberge = new Deck();
 			launch(joueur, deckHeberge);
 			do{
@@ -62,19 +63,22 @@ public class ChatConsole {
 					String rcv = chat.waitForMessage();
 					System.out.println("message du client: "+rcv);
 				}
+				System.out.println("\n\n");
 				System.out.println(joueur.toString(joueur));
 				blackjack.Game.pioche(joueur, deckHeberge);
 			}while(nbfin!=blackjack.Game.getMise());
 			
 		}else{
+			//-------------------------------------------client-------------------------------------------------
 			Deck deckClient = new Deck();
 			for(int i=0;i<4;i++){
 				String rcv = chat.waitForMessage();
 				System.out.println("client recoit: "+rcv);
 			}
-			if(status=false){
+			if(status==false){
 				launch(joueur,deckClient);
 			}else{
+				System.out.println("\n\n");
 				System.out.println(joueur.toString(joueur));
 				blackjack.Game.pioche(joueur,deckClient);
 			}
