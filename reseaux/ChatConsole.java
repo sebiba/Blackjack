@@ -22,7 +22,7 @@ public class ChatConsole {
 		String ip = "localhost";
 		switch(eberge.toLowerCase()){
 			case"y":isServer = (true);
-					System.out.println(" en attente du client...");
+					System.out.println("en attente du client...");
 				break;
 			case"n":isServer = (false);
 					ip = blackjack.Game.enter("entrez un nom de pc pour la connection: ");
@@ -47,10 +47,11 @@ public class ChatConsole {
 		if(isServer){
 			Deck deckHeberge = new Deck();
 			launch(joueur, deckHeberge);
-			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct())};
+			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
 			for(int i=0;i<joueur.main.getNbrCartes();i++){
 				msg[msg.length+1+i]=tabToString(joueur.main.getCartes()[i]);
 			}
+			System.out.println("sending message");
 			chat.sendMessage(msg[0]);
 			System.out.println("serveur send");
 			
