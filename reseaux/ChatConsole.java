@@ -20,6 +20,8 @@ public class ChatConsole {
 		String eberge = blackjack.Game.enter("heberger vous la partie?(y/n): ");
 		boolean isServer=false;
 		String ip = "localhost";
+		int nbfin = 0;
+		boolean status = false;
 		switch(eberge.toLowerCase()){
 			case"y":isServer = (true);
 					System.out.println("en attente du client...");
@@ -47,25 +49,36 @@ public class ChatConsole {
 		if(isServer){
 			Deck deckHeberge = new Deck();
 			launch(joueur, deckHeberge);
-			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
-			for(int i=0;i<joueur.main.getNbrCartes();i++){
-				msg[2+i]=tabToString(joueur.main.getCartes()[i]);
-			}
-			chat.sendMessage(msg[0]);
-			chat.sendMessage(msg[1]);
-			chat.sendMessage(msg[2]);
-			chat.sendMessage(msg[3]);
-			for(int i=0;i<4;i++){
-				String rcv = chat.waitForMessage();
-				System.out.println("message du client: "+rcv);
-			}
+			do{
+				String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
+				for(int i=0;i<joueur.main.getNbrCartes();i++){
+					msg[2+i]=tabToString(joueur.main.getCartes()[i]);
+				}
+				chat.sendMessage(msg[0]);
+				chat.sendMessage(msg[1]);
+				chat.sendMessage(msg[2]);
+				chat.sendMessage(msg[3]);
+				for(int i=0;i<4;i++){
+					String rcv = chat.waitForMessage();
+					System.out.println("message du client: "+rcv);
+				}
+				System.out.println(joueur.toString(joueur));
+				blackjack.Game.pioche(joueur, deckHeberge);
+			}while(nbfin!=blackjack.Game.getMise());
+			
 		}else{
 			Deck deckClient = new Deck();
 			for(int i=0;i<4;i++){
 				String rcv = chat.waitForMessage();
 				System.out.println("client recoit: "+rcv);
 			}
-			launch(joueur,deckClient);
+			if(status=false){
+				launch(joueur,deckClient);
+			}else{
+				System.out.println(joueur.toString(joueur));
+				blackjack.Game.pioche(joueur,deckClient);
+			}
+			status=true;
 			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
 			for(int i=0;i<joueur.main.getNbrCartes();i++){
 				msg[2+i]=tabToString(joueur.main.getCartes()[i]);
