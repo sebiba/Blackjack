@@ -55,13 +55,25 @@ public class ChatConsole {
 			chat.sendMessage(msg[1]);
 			chat.sendMessage(msg[2]);
 			chat.sendMessage(msg[3]);
+			for(int i=0;i<4;i++){
+				String rcv = chat.waitForMessage();
+				System.out.println("message du client: "+rcv);
+			}
 		}else{
 			Deck deckClient = new Deck();
 			for(int i=0;i<4;i++){
-				String msg = chat.waitForMessage();
-				System.out.println("client recoit: "+msg);
+				String rcv = chat.waitForMessage();
+				System.out.println("client recoit: "+rcv);
 			}
 			launch(joueur,deckClient);
+			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
+			for(int i=0;i<joueur.main.getNbrCartes();i++){
+				msg[2+i]=tabToString(joueur.main.getCartes()[i]);
+			}
+			chat.sendMessage(msg[0]);
+			chat.sendMessage(msg[1]);
+			chat.sendMessage(msg[2]);
+			chat.sendMessage(msg[3]);
 		}
 	}
 	
