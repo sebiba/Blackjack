@@ -52,10 +52,14 @@ public class ChatConsole {
 				msg[2+i]=tabToString(joueur.main.getCartes()[i]);
 			}
 			chat.sendMessage(msg[0]);
+			chat.sendMessage(msg[1]);
+			chat.sendMessage(msg[2]);
 		}else{
 			Deck deckClient = new Deck();
-			String msg = chat.waitForMessage();
-			System.out.println("client recoit: "+msg);
+			for(int i=0;i<3;i++){
+				String msg = chat.waitForMessage();
+				System.out.println("client recoit: "+msg);
+			}
 			launch(joueur,deckClient);
 		}
 	}
