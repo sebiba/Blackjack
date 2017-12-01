@@ -71,9 +71,11 @@ public class ChatConsole {
 		}else{
 			//-------------------------------------------client-------------------------------------------------
 			Deck deckClient = new Deck();
+			String rcv[]={};
+			do{
 			for(int i=0;i<4;i++){
-				String rcv = chat.waitForMessage();
-				System.out.println("client recoit: "+rcv);
+				rcv[i] = chat.waitForMessage();
+				System.out.println("client recoit: "+rcv[i]);
 			}
 			if(status==false){
 				launch(joueur,deckClient);
@@ -91,6 +93,7 @@ public class ChatConsole {
 			chat.sendMessage(msg[1]);
 			chat.sendMessage(msg[2]);
 			chat.sendMessage(msg[3]);
+			}while(rcv[0]!="1");
 		}
 	}
 	
