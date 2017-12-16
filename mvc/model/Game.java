@@ -11,28 +11,30 @@ import controller.GameController;
 import view.blackjackVue;
 
 public class Game extends Observable{
-	static GameController controller;
-	static blackjackVue vue;
+	GameController controller;
+	blackjackVue vue;
 	private static int mise;
 	private static int nbJoueurs;
 	static int score[] ={0,0};//score[0]==score  score[1]=numéro du joueur gagnant;
-	public static void main(String[] args) {
+	
+	public Game(){
 		menu();
 	}
 	
 	/**
 	 * fonction jouant une partie avec un seul joueur
 	 */
-	public static void solo(){
+ 	public void solo(){
 		Player joueur = new Player(); //instantiation d'un joueur
 		Deck deck = new Deck();
 		joueur.main.ajouteCarte(deck);//carte de base
 		joueur.main.ajouteCarte(deck);//carte de base
 		String mise;
+		boolean test=false;
 		do{
 			mise = controller.enter(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
 			controller.mise(mise);
-		}while(!(controller.mise(mise)));
+		}while(test==false);
 		vue.affiche("le croupier distribue les cartes...");
 		System.out.println(joueur.main.toString(joueur));
 		do{
@@ -61,7 +63,7 @@ public class Game extends Observable{
 	 * fonction jouant plusieur joueurs sur le meme pc
 	 * @param nbJoueurs de joueurs dans la partie
 	 */
-	public static void MultiLocal(int nbJoueurs){
+	public void MultiLocal(int nbJoueurs){
 		Player joueur[] = new Player[nbJoueurs]; //instantiation d'un joueur
 		Deck deck = new Deck();
 		int cpt=0,nbfin = 0;
@@ -139,10 +141,10 @@ public class Game extends Observable{
 	/**
 	 * gère le menu en mode console
 	 */
-	public static void menu(){	 
+	public void menu(){	 
 		System.out.println("Bienvenu sur la table de blackjack...");
 		int nbrJoueur=0;
-		String menu = controller.enter("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
+		String menu =controller.enter("1)règles du jeux\n2)partie en solo\n3)partie a plusieurs sur le même pc\n4)multi joueur en réseaux");
 		//System.out.println(menu);
 		switch(menu){
 			case "1":ReadFiles("rules.txt");
@@ -173,7 +175,7 @@ public class Game extends Observable{
 	 * @param joueur devant piocher
 	 * @param deck de la partie
 	 */
-	public static void pioche(Player joueur, Deck deck){
+	public void pioche(Player joueur, Deck deck){
 		if(joueur.isFin()==false){
 			String newCarte=controller.enter("voulez vous une carte? (y/n) ");
 			switch(newCarte.toLowerCase()){
@@ -234,7 +236,7 @@ public class Game extends Observable{
 	 * @param nombre de joueurs que l'on veut inscrire a la partie
 	 */
 	public void setNbJoueurs(int nbJoueurs) {
-		this.nbJoueurs = nbJoueurs;
+		Game.nbJoueurs = nbJoueurs;
 	}
 	
 	
