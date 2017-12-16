@@ -16,12 +16,12 @@ import model.Player;
 public class blackjackVueConsole extends blackjackVue implements Observer {
 	protected Scanner sc;
 	
-	public blackjackVueConsole(Game model,Player model1,
+	public blackjackVueConsole(Game model,
 			GameController controller) {
 		super(model, controller);
 		update(null, null);
 		sc = new Scanner(System.in);
-		new Thread (new ReadInput()).start();	
+		new Thread (new enter()).start();	
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class blackjackVueConsole extends blackjackVue implements Observer {
 	}
 	
 	
-	private class ReadInput implements Runnable{
+	/*private class ReadInput implements Runnable{
 		public void run() {
 			while(true){
 				try{
@@ -83,7 +83,7 @@ public class blackjackVueConsole extends blackjackVue implements Observer {
 			}
 		}
 	}
-
+*/
 
 	@Override
 	public void affiche(String string) {
