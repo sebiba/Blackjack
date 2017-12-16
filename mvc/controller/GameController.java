@@ -32,6 +32,7 @@ public class GameController {
 	
 	
 	public boolean mise(String mise){
+		System.out.println("test test");
 		if(isNumeric(mise)){
 			if(model.getMoney()<Integer.parseInt(mise)){
 				model1.addMise(Integer.parseInt(mise));
