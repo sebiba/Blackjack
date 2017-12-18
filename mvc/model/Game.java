@@ -5,16 +5,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Observable;
+import java.util.*;
 
 import controller.GameController;
-import view.blackjackVue;
 
 public class Game extends Observable{
 	GameController controller;
-	blackjackVue vue;
-	private static int mise;
-	private static int nbJoueurs;
+	Player model;
+	ArrayList<Player> joueur = new ArrayList<Player>();
+	private int mise;
+	private int nbJoueurs;
 	static int score[] ={0,0};//score[0]==score  score[1]=numéro du joueur gagnant;
 	
 	public Game(){
@@ -25,26 +25,27 @@ public class Game extends Observable{
 	 * fonction jouant une partie avec un seul joueur
 	 */
  	public void solo(){
-		Player joueur = new Player(); //instantiation d'un joueur
 		Deck deck = new Deck();
-		joueur.main.ajouteCarte(deck);//carte de base
-		joueur.main.ajouteCarte(deck);//carte de base
+		joueur.add(new Player()); //instantiation d'un joueur
+		joueur.get(0).getMain().ajouteCarte(deck);//carte de base
+		joueur.get(0).getMain().ajouteCarte(deck);//carte de base
 		String mise;
 		boolean test=false;
 		do{
-			mise = controller.enter(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
-			controller.mise(mise);
-		}while(test==false);
-		vue.affiche("le croupier distribue les cartes...");
-		System.out.println(joueur.main.toString(joueur));
+			mise = controller.enter(joueur.get(0).getNom()+" vous avez "+joueur.get(0).getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
+		}while(mise(mise, joueur.get(0)));
+		setChanged();
+		notifyObservers();
+		//vue.affiche("le croupier distribue les cartes...");
+		System.out.println(joueur.get(0).getMain().toString(joueur.get(0)));
 		do{
-			pioche(joueur, deck);
-			System.out.println(joueur.toString(joueur));
-		}while(joueur.isFin()==false);
+			pioche(joueur.get(0), deck);
+			System.out.println(joueur.get(0).toString(joueur.get(0)));
+		}while(joueur.get(0).isFin()==false);
 		
-		vue.affiche("checking result...");
-		//result(joueur);
-		reset(joueur);
+		System.out.println("checking result...");
+		result(joueur);
+		reset(joueur.get(0));
 		
 	}
 	
@@ -53,9 +54,9 @@ public class Game extends Observable{
 	 * @param nbJoueurs nombre de joueurs sur la partie
 	 * @throws IOException
 	 */
-	public static void multi(int nbJoueurs) throws IOException{
-		Player joueur= new Player();
-		reseaux.ChatConsole.ChatConsole(joueur);//connection a l'autre
+	public void multi(int nbJoueurs) throws IOException{
+		this.joueur.add(new Player()); //instantiation d'un joueur
+		reseaux.ChatConsole.ChatConsole(joueur.get(0));//connection a l'autre
 		
 	}
 	
@@ -64,27 +65,28 @@ public class Game extends Observable{
 	 * @param nbJoueurs de joueurs dans la partie
 	 */
 	public void MultiLocal(int nbJoueurs){
-		Player joueur[] = new Player[nbJoueurs]; //instantiation d'un joueur
 		Deck deck = new Deck();
-		int cpt=0,nbfin = 0;
-		for(int i=0;i<nbJoueurs;i++){
-			joueur[i] = new Player();//instantiation de nbJoueurs joueur
+		for(int x=0;x<nbJoueurs;x++){
+			this.joueur.add(new Player()); //instantiation d'un joueur
 			String mise;
 			do{
-				mise = controller.enter(joueur[i].getNom()+" vous avez "+joueur[i].getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
-				controller.mise(mise);
-			}while(!(controller.mise(mise)));
-			joueur[i].main.ajouteCarte(deck);//carte de base
-			joueur[i].main.ajouteCarte(deck);//carte de base
+				mise = controller.enter(joueur.get(x).getNom()+" vous avez "+joueur.get(x).getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
+			}while(!(mise(mise,joueur.get(x))));
+			joueur.get(x).main.ajouteCarte(deck);//carte de base
+			joueur.get(x).main.ajouteCarte(deck);//carte de base
 		}
-		vue.affiche("le croupier distribue les cartes...");
+		int cpt=0,nbfin = 0;
+		
+		setChanged();
+		notifyObservers();
+		//vue.affiche("le croupier distribue les cartes...");
 		do{
 			nbfin=0;
-			System.out.println(joueur[cpt].toString(joueur[cpt]));
+			System.out.println(joueur.get(cpt).toString(joueur.get(cpt)));
 			System.out.println("mise en jeu :"+mise);
-			pioche(joueur[cpt], deck);
+			pioche(joueur.get(cpt), deck);
 			for(int i=0;i<nbJoueurs;i++){
-				if(joueur[i].isFin()==true){
+				if(joueur.get(i).isFin()==true){
 					nbfin+=1;
 				}
 			}
@@ -97,16 +99,17 @@ public class Game extends Observable{
 		
 		System.out.println("checking result...");
 		result(joueur);
-		System.out.println("le gagnant de cette partie est "+joueur[score[1]].getNom());
-		joueur[score[1]].addMoney(mise);
+		System.out.println("le gagnant de cette partie est "+joueur.get(score[1]).getNom());
+		joueur.get(score[1]).addMoney(mise);
 	}
-	
+
 	/**
 	 * reset les parametres afin de bien recommencer une nouvelle partie
 	 * @param joueur
 	 */
-	public static void reset(Player joueur){
+	public void reset(Player joueur){
 		joueur.setFin(false);
+		this.joueur.clear();
 		setMise(0);
 		joueur.main.setAsreturn(0);
 	}
@@ -116,7 +119,9 @@ public class Game extends Observable{
 	 * @param choix mise du joueur
 	 */
 	public void addMise(int choix){
-		mise+=choix;
+		this.mise+=choix;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -191,18 +196,60 @@ public class Game extends Observable{
 		}
 	}
 	
+	public boolean mise(String mise, Player joueur){
+		if(isNumeric(mise)== true){
+			if(joueur.getMoney()<Integer.parseInt(mise)){
+				addMise(Integer.parseInt(mise));
+				setChanged();
+				notifyObservers();
+				//vue.affiche("Vous avez misé "+mise+"€");
+				return true;
+			}else{
+				setChanged();
+				notifyObservers();
+				//vue.affiche("vous ne pouvez pas miser autant...");
+				return false;
+			}
+		}else{
+			setChanged();
+			notifyObservers();
+			//vue.affiche("Vous n'avez pas rentré un nombre");
+			return false;
+		}
+	}
+	
 	/**
 	 * fonction calculant les score de chaque joueur de la partie
 	 * @param tableau de joueur de la partie en cours
 	 */
-	public static void result(Player joueur[]){
-		for(int i=0;i<nbJoueurs;i++){
-			System.out.println("nom: "+joueur[i].getNom()+"\tscore: "+joueur[i].main.getTot());
-			reset(joueur[i]);
-			if(score[0]<joueur[i].main.getTot()){
-				score[0]=joueur[i].main.getTot();
+	public void result(ArrayList<Player> joueur){
+		for(int i=0;i<joueur.size();i++){
+			System.out.println("nom: "+joueur.get(i).getNom()+"\tscore: "+joueur.get(i).getMain().getTot());
+			reset(joueur.get(i));
+			if(score[0]<joueur.get(i).getMain().getTot()){
+				score[0]=joueur.get(i).getMain().getTot();
 				score[1]=i;
 			}
+		}
+	}
+	
+	/**
+	 * verifie si la String passée en parametre est numérique
+	 * @param str String que l'on veut passer en parametre
+	 * @return true si la String est constitué que de chiffre
+	 * @return false si la String a un seul charactere non numérique
+	 */
+	public boolean isNumeric(String str){
+		int isnum = 0;
+		for(int i=0;i<str.length();i++){
+			if(Character.isDigit(str.charAt(i))){
+				isnum+=1;
+			}
+		}
+		if(isnum==str.length()){
+			return true;
+		}else{
+			return false;
 		}
 	}
 	
@@ -211,7 +258,7 @@ public class Game extends Observable{
 	 * fonction retournant la mise de la partie
 	 * @return la mise de la partie
 	 */
-	public static int getMise() {
+	public int getMise() {
 		return mise;
 	}
 	
@@ -219,8 +266,8 @@ public class Game extends Observable{
 	 * fonction settant a mise la valeur passé en parametre
 	 * @param valeur que l'on veut afecter a la mise de la partie
 	 */
-	public static void setMise(int mise) {
-		Game.mise = mise;
+	public void setMise(int mise) {
+		this.mise = mise;
 	}
 	
 	/**
@@ -236,7 +283,15 @@ public class Game extends Observable{
 	 * @param nombre de joueurs que l'on veut inscrire a la partie
 	 */
 	public void setNbJoueurs(int nbJoueurs) {
-		Game.nbJoueurs = nbJoueurs;
+		this.nbJoueurs = nbJoueurs;
+	}
+	
+	public ArrayList<Player> getJoueur() {
+		return joueur;
+	}
+
+	public void setJoueur(ArrayList<Player> joueur) {
+		this.joueur = joueur;
 	}
 	
 	
