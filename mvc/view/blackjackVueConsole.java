@@ -33,7 +33,7 @@ public class blackjackVueConsole extends blackjackVue implements Observer {
 	
 
 	private void printJoueur(){
-		//affiche(model1.toString());
+		affiche(model.getJoueur().get(0).toString());
 	}
 	
 	private class enter implements Runnable{
