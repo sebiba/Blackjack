@@ -1,36 +1,31 @@
 package test;
-/**
- * @author <a href="mailto:gery.casiez@lifl.fr">Gery Casiez</a>
- * modified by vvds
- */
 
 import controller.GameController;
 import model.Game;
 import view.blackjackVue;
 import view.blackjackVueConsole;
-//import view.blackjackVueGUI;
+import view.blackjackVueGUI;
 
 public class blackjackMVC {
 	public blackjackMVC() {
 		//Création du modèle
-//Player model1 = new Player();
 		Game model = new Game();
 		//TODO
 
 		//Création des contrôleurs : Un pour chaque vue
 		//Chaque contrôleur doit avoir une référence vers le modèle pour pouvoir le commander
-//GameController ctrlGUI = new GameController(model);
+		GameController ctrlGUI = new GameController(model);
 		GameController ctrlConsole = new GameController(model);
 		//TODO
 		
 		//Création des vues.
 		//Chaque vue doit connaître son contrôleur et avoir une référence vers le modèle pour pouvoir l'observer
-//blackjackVue gui = new blackjackVueGUI(model, ctrlGUI, 200, 200);
+		blackjackVue gui = new blackjackVueGUI(model, ctrlGUI, 200, 200);
 		blackjackVue console = new blackjackVueConsole(model, ctrlConsole);
 		//TODO
 		
 		//On donne la référence à la vue pour chaque contrôleur
-//ctrlGUI.addView(gui);
+		ctrlGUI.addView(gui);
 		ctrlConsole.addView(console);
 		//TODO
 		
