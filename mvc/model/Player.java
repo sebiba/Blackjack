@@ -10,8 +10,6 @@ import model.Game;
  */
 
 public class Player{
-	GameController controller;
-	Game model;
 	private int money;
 	private boolean fin=false;
 	private boolean win;
@@ -21,22 +19,12 @@ public class Player{
 	/**
 	 * constructeur sans argument de la classe
 	 */
-	public Player(){
+	public Player(String nom){
 		this.money=1500;
-		this.win=false;
-		this.nom=controller.enter("entrez le nom du joueur: ");
-		this.miseAct=0;
-	}
-	/**
-	 * constructeur avec comme argument
-	 * @param money l'argent donné a la personne en début de partie
-	 * @param nom du joueur
-	 */
-	public Player(int money, String nom){
-		this.money=money;
 		this.win=false;
 		this.nom=nom;
 		this.miseAct=0;
+		
 	}
 	/**
 	 * fonction verifiant si la mise voulue est plus grande que l'argent du joueur et traite la mise du joueur
@@ -45,7 +33,7 @@ public class Player{
 	
 	public void mise(int choix){
 		if(choix<=money){
-			model.addMise(choix);
+			//model.addMise(choix);
 			this.money=this.money-choix;
 			this.miseAct=choix;
 		}else{
