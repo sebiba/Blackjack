@@ -6,16 +6,21 @@ import controller.GameController;
 import model.Game;
 import view.BlackjackVue;
 import view.BlackjackVueConsole;
+import view.BlackjackVueGui;
 
 public class blackjackMVC {
-	BlackjackVueConsole view;
 	public blackjackMVC() {
 		Game model = new Game();
 		
 		GameController controlCli = new GameController(model);
+		GameController controlGui = new GameController(model);
 		
 		BlackjackVue cli = new BlackjackVueConsole(model, controlCli);
+		BlackjackVue gui = new BlackjackVueGui(model, controlGui);
+		
 		controlCli.addView(cli);
+		controlGui.addView(gui);
+		
 		cli.menu();
 	}
 	
@@ -24,10 +29,10 @@ public class blackjackMVC {
 		//creating and showing this application's GUI.
 
 		new blackjackMVC();
-		/*EventQueue.invokeLater(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				new blackjackMVC();
 			}
-		});*/
+		});
 	}
 }
