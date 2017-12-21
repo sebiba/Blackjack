@@ -17,18 +17,18 @@ public class Chat {
 	Socket socket;
 	ServerSocket s;
 	/**
-	 * Constructeur.  Permet d'initialiser le chat en Ã©tablissant la 
-	 * connection avec un interlocuteur situÃ© sur la mÃªme machine. 
+	 * Constructeur.  Permet d'initialiser le chat en établissant la 
+	 * connection avec un interlocuteur situé sur la même machine. 
 	 * @param isServer : si true, l'instance est un serveur et se met en attente d'une connexion
-	 * @port le numÃ©ro de port sur lequel Ã©tablir la connexion
-	 * @exception IOException s'il y a un problÃ¨me pendant l'Ã©tablissement de la connexion
+	 * @port le numéro de port sur lequel établir la connexion
+	 * @exception IOException s'il y a un problème pendant l'établissement de la connexion
 	 */
 	public Chat(boolean isServer, int port,String ip) throws IOException {
 		connect(isServer, port, ip);
 	}
 
 	/**
-	 * Envoie le messages msg Ã  l'interlocuteur
+	 * Envoie le messages msg à l'interlocuteur
 	 * @param msg un message
 	 */
 	public void sendMessage(String msg) {
@@ -38,7 +38,7 @@ public class Chat {
 
 	/**
 	 * Attend le prochain message de l'interlocuteur
-	 * @return le message reÃ§u de l'interlocuteur
+	 * @return le message reçu de l'interlocuteur
 	 * @exception IO Exception en cas d'erreur de transmission
 	 */
 	public String waitForMessage() throws IOException {
@@ -48,11 +48,11 @@ public class Chat {
 		return str;
 	}
 	/**
-	 * Permet l'Ã©tablissement d'une connexion avec un hÃ´te distant
+	 * Permet l'établissement d'une connexion avec un hôte distant
 	 * @param isServer : si true, l'instance est un serveur et se met en attente d'une connexion
-	 * @port le numÃ©ro de port sur lequel Ã©tablir la connexion
-	 * @addr si isServer est false, addr contient l'adresse du serveur Ã  contacter
-	 * @exception IOException s'il y a un problÃ¨me pendant l'Ã©tablissement de la connexion
+	 * @port le numéro de port sur lequel établir la connexion
+	 * @addr si isServer est false, addr contient l'adresse du serveur à contacter
+	 * @exception IOException s'il y a un problème pendant l'établissement de la connexion
 	 */
 	public void connect(boolean isServer, int port, String addr) throws IOException{
         //TODO		
@@ -66,7 +66,7 @@ public class Chat {
 		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
 	}
 	/**
-	 * Ferme tous les flux d'une connexion Ã©tablie.
+	 * Ferme tous les flux d'une connexion établie.
 	 * @exception IOException en cas d'erreur dans la fermeture de connexion
 	 */
 	public void closeConnection() throws IOException{
@@ -78,5 +78,3 @@ public class Chat {
 	}
 
 }
-
-
