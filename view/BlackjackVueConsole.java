@@ -16,15 +16,19 @@ import model.Player;
 public class BlackjackVueConsole extends BlackjackVue implements Observer {
 	BufferedReader keyboard;
 	
+	/**
+	 * contructeur de la vue console
+	 * @param model de la partie
+	 * @param controller de la partie
+	 */
 	public BlackjackVueConsole(Game model, GameController controller) {
 		super(model, controller);
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 		update(null, null);
-		//new Thread (new enter()).start();	
 	}
 	
 	/**
-	 * gère le menu en mode console
+	 * fonction affichant le menu en mode console
 	 */
 	@Override
 	public void menu(){	 
@@ -67,6 +71,7 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 	
 	/**
 	 * fonction lisant les entrées dans la console
+	 * @param text a afficher en demandant une valeur
 	 * @return String de ce que l'utilisateur à entré
 	 */
 	public String input(String texte){
@@ -79,16 +84,12 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 		}
 		return entre;
 	}
-	
-	
 
- /*	public void solo(){
-		System.out.println("checking result...");
-		result(joueur);
-		reset(joueur.get(0));
-		
-	}*/
-
+	/**
+	 * fonction gerant les objects a afficher a la console
+	 * @param o 
+	 * @param arg
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		int nbfin =0;
@@ -128,24 +129,18 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 		
 	}
 	
-
+	/**
+	 * fonction affichant les données des joueurs
+	 * @param joueur dont on veut les données
+	 */
 	private void printJoueur(Player joueur){
 		affiche(joueur.toString(joueur));
 	}
 	
-	private class Enter implements Runnable{
-		public void run(){
-			String entre = "";
-			BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-			try {
-				entre = keyboard.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
+	/**
+	 * fonction affichant une String a l'écran
+	 * @param texte que l'on affiche a la console
+	 */
 	@Override
 	public void affiche(String string) {
 		System.out.println(string);

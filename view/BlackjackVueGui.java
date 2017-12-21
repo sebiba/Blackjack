@@ -38,7 +38,7 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 	JMenuBar menuBar;
 	JMenu menu;
 	JMenuItem menuItem;
-	JRadioButtonMenuItem rbMenuItem;
+	private JRadioButtonMenuItem rbMenuItem;
 	private JRadioButtonMenuItem rbMenuItem_2;
 	private JRadioButtonMenuItem rbMenuItem_1;
 	JCheckBoxMenuItem cbMenuItem;
@@ -50,6 +50,11 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 	JButton btnCarte;
 	ArrayList<String> joueurNom =new ArrayList<String>();
 	
+	/**
+	 * constructeur de la GUI construissant l'onglet menu avec les different choix avec des handlers associer pour lancer les différent type de partie
+	 * @param model de la partie
+	 * @param controller de la partie
+	 */
 	public BlackjackVueGui(Game model, GameController controller){
 		super(model, controller);
 		f.setSize(400, 400);
@@ -86,7 +91,6 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 				
 				joueurNom.add(JOptionPane.showInputDialog("entrez un nom de joueur"));
 				controller.solo(joueurNom);
-				controller.setEtat(0);
 
 				btnFin.setEnabled(true);
 				btnMise.setEnabled(true);
@@ -101,9 +105,17 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		rbMenuItem_1 = new JRadioButtonMenuItem("multi local");
 		rbMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				joueurNom.add(JOptionPane.showInputDialog("entrez un nom de joueur"));
-				controller.solo(joueurNom);
+				int nbrJoueur = Integer.parseInt(JOptionPane.showInputDialog("combien de joueur voulez-vous?"));
+				for(int i=0; i<nbrJoueur;i++){
+					joueurNom.add(JOptionPane.showInputDialog("entrez un nom de joueur"));	
+				}
+				controller.MultiLocal(joueurNom);
 				NomJoueur.setText(model.getJoueur().get(0).getNom());
+				
+				btnFin.setEnabled(true);
+				btnMise.setEnabled(true);
+				btnCarte.setEnabled(true);
+				update(null, null);
 			}
 		});
 		rbMenuItem_1.setMnemonic(KeyEvent.VK_O);
@@ -116,12 +128,77 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		menu.add(rbMenuItem_1);
 
 		f.setJMenuBar(menuBar);
-		menuGui();
 		
 
 	}
 	
-	public void menuGui(){
+	/**
+	 * fonction permetant d'actualiser les différent parametre du joueur afficher à l'écran
+	 * @param joueur jouant la partie
+	 */
+	public void printJoueur(Player joueur){
+		NomJoueur.setText("Nom: "+joueur.getNom());
+		Argent.setText("Argent: "+joueur.getMoney());
+		txtrCarte.setText(joueur.getHand().toString(model.getJoueur().get(0)));
+	}
+	
+	/**
+	 * fonction demandant une valeur au joueur
+	 */
+	public String input(String string){
+		return JOptionPane.showInputDialog(string);
+	}
+	
+	/**
+	 * fonction gerant les objects a afficher a la console
+	 * @param o
+	 * @param arg
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		int nbfin =0;
+		//System.out.println(controller.getEtat());
+		switch (controller.getEtat()){
+			case 0: for(Player joueur : model.getJoueur()){
+						printJoueur(joueur);
+						if(joueur.isFin()==true){
+							nbfin+=1;
+						}
+					}
+					if(nbfin>=model.getNbJoueurs()){
+						controller.result(model.getJoueur());
+					}
+				break;
+			case 1:String mise;
+					for(Player joueur : model.getJoueur()){
+						do{
+							mise = input(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
+						}while(!(controller.ChecMise(mise, joueur)));
+						controller.setEtat(0);
+						update(null, null);
+					}
+				break;
+		}
+		
+	}
+	
+	/**
+	 * fonction permetant d'afficher un message au joueur
+	 */
+	@Override
+	public void affiche(String string) {
+		JOptionPane.showMessageDialog(f, string);
+		
+	}
+	
+	/**
+	 * fonction construisant les 3 boutons principaux (mise, fin, carte)
+	 * l'espace pour le nom du joueur en train de jouer
+	 * l'espace pour l'argent
+	 * la texte area pour les cartes
+	 */
+	@Override
+	public void menu() {
 		ArrayList<String> joueurNom =new ArrayList<String>();
 		panel.setBounds(0, 40, 382, 287);
 		f.getContentPane().add(panel);
@@ -143,7 +220,7 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		btnCarte.setEnabled(false);
 		btnCarte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.getJoueur().get(0).getMain().ajouteCarte(model.getDeck());
+				model.getJoueur().get(0).getHand().ajouteCarte(model.getDeck());
 				controller.setEtat(0);
 				update(null, null);
 			}
@@ -177,53 +254,6 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		txtrCarte.setBounds(120, 109, 189, 113);
 		panel.add(txtrCarte);
 		f.setVisible(true);
-		
-	}
-	
-	public void printJoueur(Player joueur){
-		NomJoueur.setText("Nom: "+joueur.getNom());
-		Argent.setText("Argent: "+joueur.getMoney());
-		txtrCarte.setText(joueur.getMain().toString(model.getJoueur().get(0)));
-	}
-	
-	public String input(String string){
-		return JOptionPane.showInputDialog(string);
-	}
-	@Override
-	public void update(Observable o, Object arg) {
-		int nbfin =0;
-		//System.out.println(controller.getEtat());
-		switch (controller.getEtat()){
-			case 0: for(Player joueur : model.getJoueur()){
-						printJoueur(joueur);
-						if(joueur.isFin()==true){
-							nbfin+=1;
-						}
-					}
-					if(nbfin>=model.getNbJoueurs()){
-						controller.result(model.getJoueur());
-					}
-				break;
-			case 1:String mise;
-					for(Player joueur : model.getJoueur()){
-						do{
-							mise = input(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
-						}while(!(controller.ChecMise(mise, joueur)));
-						controller.setEtat(0);
-						update(null, null);
-					}
-				break;
-		}
-		
-	}
-	@Override
-	public void affiche(String string) {
-		System.out.println(string);
-		
-	}
-	@Override
-	public void menu() {
-		// TODO Auto-generated method stub
 		
 	}
 }
