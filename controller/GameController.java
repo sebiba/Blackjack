@@ -13,29 +13,51 @@ import model.Game;
 import model.Player;
 import view.BlackjackVue;
 import reseaux.Chat;
-import reseaux.ChatConsole;
 
 public class GameController {
 	Game model; 
 	BlackjackVue vue;
-	ChatConsole reseaux;
 	public int etat=0;//etat 0= crée le joueur  1=doit miser 2=doit choisir carte
 	BufferedReader keyboard;
+	boolean reseau=false;
 	
+	/**
+	 * constructeur du controller lian le model a une variable global et un bufferReader
+	 * @param model utiliser dans le jeu
+	 */
 	public GameController(Game model) {
 		this.model = model;
 		keyboard = new BufferedReader(new InputStreamReader(System.in));
 	}	
 	
+	/**
+	 * fonction lian la vue a une variable global
+	 * @param vue
+	 */
 	public void addView(BlackjackVue vue) {
 		this.vue = vue;
 	}
 	
+	/**
+	 * fonction débutant une partie de blackjack en solo.
+	 * efface le contenu eventuel de la arrayList de joueurs.
+	 * ajoute un joueur
+	 * met l'état de la partie a 0 
+	 * @param nom arraylist contenant un joueur
+	 */
 	public void solo(ArrayList<String> nom){
 		model.ClearJoueur();
 		model.addJoueur(nom);
 		setEtat(0);
 	}
+	
+	/**
+	 * fonction débutant une partie de blackjack en multijoueur local.
+	 * efface le contenu eventuel de la arrayList de joueurs.
+	 * ajoute les joueurs
+	 * met l'état de la partie a 0 
+	 * @param nom arraylist contenant des joueurs
+	 */
 	public void MultiLocal(ArrayList<String> nom) {
 		model.ClearJoueur();
 		model.addJoueur(nom);
@@ -58,17 +80,16 @@ public class GameController {
 	
 	/**
 	 * fonction calculant les score de chaque joueur de la partie
-	 * @param tableau de joueur de la partie en cours
+	 * @param arraylist de joueurs de la partie en cours
 	 */
 	public void result(ArrayList<Player> joueur){
 		String rejoue="";
 		for(int i=0;i<joueur.size();i++){
-			vue.affiche("nom: "+joueur.get(i).getNom()+"\tscore: "+joueur.get(i).getMain().getTot());
-			if(model.getScore()[0]<joueur.get(i).getMain().getTot()){
-				model.getScore()[0]=joueur.get(i).getMain().getTot();
+			vue.affiche("nom: "+joueur.get(i).getNom()+"\tscore: "+joueur.get(i).getHand().getTot());
+			if(model.getScore()[0]<joueur.get(i).getHand().getTot()){
+				model.getScore()[0]=joueur.get(i).getHand().getTot();
 				model.getScore()[1]=i;
 			}
-			model.reset(joueur.get(i));
 		}
 		vue.affiche("le gagnant est "+model.getJoueur().get(model.getScore()[1]).getNom());
 		model.getJoueur().get(model.getScore()[1]).setMoney(model.getJoueur().get(model.getScore()[1]).getMoney()+model.getMise());
@@ -77,6 +98,7 @@ public class GameController {
 		switch(rejoue.toLowerCase()){
 		case "y":setEtat(0);
 				vue.update(null, null);
+				pioche();
 			break;
 		case "n":vue.menu();
 			break;
@@ -86,6 +108,14 @@ public class GameController {
 		}
 	}
 	
+	
+	/**
+	 * fonction verifiant que la mise entrée par un joueur est un chiffre et que le joueur peu miser cette valeur
+	 * @param valeur voulant être misée par le joueur
+	 * @param joueur voulant miser
+	 * @return true si le joueur peux miser la valeur voulue
+	 * @return false si le joueur a rentré une mise impossible
+	 */
 	public boolean ChecMise(String mise, Player joueur){
 		if(isNumeric(mise)== true){
 			if(joueur.getMoney()>=Integer.parseInt(mise)){
@@ -125,7 +155,6 @@ public class GameController {
 	
 	/**
 	 * fonction gerant la pioche de chaque joueur
-	 * @param joueur devant piocher
 	 * @param deck de la partie
 	 */
 	public void pioche(){
@@ -136,9 +165,11 @@ public class GameController {
 				String newCarte=input(joueur.getNom()+" voulez vous une carte? (y/n) ");
 				switch(newCarte.toLowerCase()){
 				case "y":System.out.println("OK voici une carte");
-						joueur.main.ajouteCarte(deck);
-						setEtat(3);
-						vue.update(null, null);
+						joueur.getHand().ajouteCarte(deck);
+						if(reseau==false){
+							setEtat(3);
+							vue.update(null, null);
+						}
 					break;
 				case "n":joueur.setFin(true);
 					break;
@@ -160,9 +191,12 @@ public class GameController {
 			InputStreamReader lecture= new InputStreamReader(flux);
 			BufferedReader buff= new BufferedReader(lecture);
 			String ligne;
+			String rules = "";
 			while((ligne=buff.readLine())!= null){
-				vue.affiche(ligne);
+				rules+=ligne;
+				rules+="\n";
 			}
+			vue.affiche(rules);
 			buff.close();
 		}catch(Exception e){
 			System.out.println(e.toString());
@@ -184,10 +218,20 @@ public class GameController {
 		return entre;
 	}
 
+	/**
+	 * fonction retournant la valeur de l'état de la partie
+	 * @return 0= crée le joueur  
+	 * @return 1=doit miser 
+	 * @return 2=doit choisir carte
+	 */
 	public int getEtat() {
 		return etat;
 	}
 
+	/**
+	 * fonction permetant de donner une valeur pour l'état de la partie
+	 * @param etat 0= crée le joueur  1=doit miser 2=doit choisir carte
+	 */
 	public void setEtat(int etat) {
 		this.etat = etat;
 	}
@@ -195,15 +239,15 @@ public class GameController {
 	
 	/**
 	 * fonction lancant la communication reseaux
-	 * @param joueur local dela partie
+	 * @param joueur local de la partie
 	 * @throws IOException 
 	 */
 	public void ChatConsole(Player joueur) throws IOException{
+		reseau = true;
 		String eberge = vue.input("heberger vous la partie?(y/n): ");
 		boolean isServer=false;
 		String ip = "localhost";
 		int nbfin = 0;
-		boolean status = false;
 		switch(eberge.toLowerCase()){
 			case"y":isServer = (true);
 					vue.affiche("en attente du client...");
@@ -214,50 +258,33 @@ public class GameController {
 			default:isServer=false;
 				break;
 		}
-		Scanner sc = new Scanner(System.in);
 		Chat chat = new Chat( isServer , 12345,ip);
-		if(isServer){
-			//-----------------------------------------serveur---------------------------------------------
+		if(isServer){//-----------------------------------------serveur---------------------------------------------
 			launch(joueur, model.getDeck());
 			do{
-				for(int i=0;i<joueur.getMain().getNbrCartes();i++){
-					chat.sendMessage(joueur.toString(joueur));
-				}
-				for(int i=0;i<4;i++){
-					String rcv = chat.waitForMessage();
-					System.out.println("message du client: "+rcv);
-				}
-				System.out.println("\n\n");
-				System.out.println(joueur.toString(joueur));
+				chat.sendMessage(joueur.toString(joueur));
+				
+				String rcv = chat.waitForMessage();
+					
+				vue.affiche("message du client: "+rcv);
+					
+				vue.affiche("\n\n"+joueur.toString(joueur));
 				pioche();
 			}while(nbfin!=model.getMise());
 			
-		}else{
-			//-------------------------------------------client-------------------------------------------------
-			Deck deckClient = new Deck();
-			String rcv[]={"","","","","",""};
+		}else{//-------------------------------------------client-------------------------------------------------
+			String rcv="";
 			String data[]={"nom: ","argent: ","carte: "};
 			int cpt=0;
+			launch(joueur,model.getDeck());
 			do{
-				rcv[0] = chat.waitForMessage();
-				System.out.println(rcv[0]);
-			if(status==false){
-				launch(joueur,deckClient);
-			}else{
-				System.out.println("\n\n");
-				System.out.println(joueur.toString(joueur));
-				pioche();
-			}
-			status=true;
-			String[] msg= {joueur.getNom(),Integer.toString(joueur.getMiseAct()),"","","","","","","",""};
-			for(int i=0;i<joueur.getMain().getNbrCartes();i++){
-				msg[2+i]=tabToString(joueur.getMain().getCartes()[i]);
-			}
-			chat.sendMessage(msg[0]);
-			chat.sendMessage(msg[1]);
-			chat.sendMessage(msg[2]);
-			chat.sendMessage(msg[3]);
-			}while(rcv[0]!="1"); // a revoir
+			rcv = chat.waitForMessage();
+			vue.affiche(rcv);
+			vue.affiche("\n\n"+joueur.toString(joueur));
+			pioche();
+			chat.sendMessage(joueur.toString(joueur));
+			
+			}while(rcv!="1"); // a revoir
 		}
 	}
 	
@@ -272,6 +299,7 @@ public class GameController {
 			String mise = vue.input(joueur.getNom()+" vous avez "+joueur.getMoney()+"\ncombien voulez-vous misez?(0 pour rien miser)");//demande la mise a chaque joueur
 			if(isNumeric(mise)){
 				joueur.mise(Integer.parseInt(mise));
+				isNum=true;
 				break;
 			}
 		}while(isNum==false);
