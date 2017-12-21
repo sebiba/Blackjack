@@ -19,4 +19,5 @@ public abstract class BlackjackVue implements Observer{
 
 	public abstract void affiche(String string) ;
 	public abstract void menu();
+	public abstract String input(String texte);
 }

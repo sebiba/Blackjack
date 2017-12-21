@@ -34,7 +34,7 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 		ArrayList<String> joueurNom =new ArrayList<String>();
 		joueurNom.clear();
 		switch(menu){
-			case "1":ReadFiles("rules.txt");
+			case "1":controller.ReadFiles("rules.txt");
 					input("appuyez sur une touche pour continuer");
 					affiche("--------------------------------------");//a remplacer par un clear console
 				break;
@@ -88,27 +88,6 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 		reset(joueur.get(0));
 		
 	}*/
-	
-	
-	
-	/**
-	 * fonction lisant et affichant le contenu d'un fichier texte
-	 * @param nom du fichier texte que l'on veut lire
-	 */
-	public static void ReadFiles(String nom){
-		try{
-			InputStream flux= new FileInputStream(nom);
-			InputStreamReader lecture= new InputStreamReader(flux);
-			BufferedReader buff= new BufferedReader(lecture);
-			String ligne;
-			while((ligne=buff.readLine())!= null){
-				System.out.println(ligne);
-			}
-			buff.close();
-		}catch(Exception e){
-			System.out.println(e.toString());
-		}
-	}
 
 	@Override
 	public void update(Observable o, Object arg) {
