@@ -7,12 +7,6 @@ public class Hand{
 	private int as = 0;
 	private int asreturn = 0;
 	private int tot;
-	/**
-	 * constructeur sans parametre pour une main de joueur
-	 */
-	public Hand(){
-		
-	}
 	
 	/**
 	 * fonction ajoutant une carte au joueur en appelant la fonction PiocheCarte de Deck
@@ -26,7 +20,7 @@ public class Hand{
 	/**
 	 * fonction retournant un String avec les cartes du joueurs et calculant les as et total du joueur
 	 * @param joueur
-	 * @return
+	 * @return String représantant la main
 	 */
 	public String toString(Player joueur){
 		String string="";
@@ -35,7 +29,7 @@ public class Hand{
 			string+=("cartes: "+cartes[cpt]+"\n");
 			tot+=cartes[cpt].getValeur();
 		}
-		int as =isas();
+		int as =isAs();
 		as+=asreturn;
 		tot+=10*as;
 		while(as>0 && tot>21){//remplace la valeur des as si le tot depasse 21 par palier
@@ -61,7 +55,7 @@ public class Hand{
 	 * fonction calculant si il y a un as en plus du tour précédant
 	 * @return le nombre d'as en plus
 	 */
-	public int isas(){
+	public int isAs(){
 		int cptas=0;
 		for(int cpt=0;cpt<nbrCartes;cpt++){
 			if(cartes[cpt].getValeur()==1){
@@ -161,7 +155,7 @@ public class Hand{
 	 * fonction retournant les as valant encore 11 et qui n'ont pas été reduit a 1
 	 * @return la valeur de asreturn
 	 */
-	public int getAsreturn() {
+	public int getAsReturn() {
 		return asreturn;
 	}
 	
@@ -169,7 +163,7 @@ public class Hand{
 	 * fonction settant une valeur a asretun
 	 * @param asreturn
 	 */
-	public void setAsreturn(int asreturn) {
-		this.asreturn = asreturn;
+	public void setAsReturn(int asReturn) {
+		this.asreturn = asReturn;
 	}
 }

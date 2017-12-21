@@ -3,10 +3,9 @@ package model;
 import java.util.Random;
 
 public class Deck{
-	private int nbrCarteDepart;
 	Carte[] deck = new Carte[52];
 	
-	/**constructeur du deck de 52 object cartes
+	/**constructeur du deck creant 52 object cartes
 	 * 
 	 */
 	public Deck(){
@@ -18,6 +17,7 @@ public class Deck{
 			}
 		}
 	}
+	
 	/**
 	 * fonction simulant la pioche d'une carte dans le deck
 	 * affecte la valeur true a la var isUsed de la carte pour eviter qu'elle resorte

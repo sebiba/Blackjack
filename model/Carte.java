@@ -47,6 +47,7 @@ public class Carte {
 	public int getValeur() {
 		return valeur;
 	}
+	
 	/**
 	 * fonction settant a la variable valeur le parametre envoyer en parametre
 	 * @param valeur
@@ -91,6 +92,7 @@ public class Carte {
 	        default:  	return "??";
 		}
 	}
+	
 	/**
 	 * fonction retournant
 	 * @return true si la carte est déjà utilisée
@@ -99,6 +101,7 @@ public class Carte {
 	public boolean isUsed(){
 		return this.usedCarte;
 	}
+	
 	/**
 	 * fonction affectan true a usedCarte pour eviter qu'elle resorte
 	 */

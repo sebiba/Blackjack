@@ -15,9 +15,10 @@ public class Player{
 	private boolean win;
 	private String nom;
 	private int miseAct;
-	public Hand main = new Hand();
+	public Hand hand = new Hand();
+
 	/**
-	 * constructeur sans argument de la classe
+	 * constructeur de la classe prenant en argument le nom du joueur à créer
 	 */
 	public Player(String nom){
 		this.money=1500;
@@ -26,11 +27,11 @@ public class Player{
 		this.miseAct=0;
 		
 	}
+	
 	/**
 	 * fonction verifiant si la mise voulue est plus grande que l'argent du joueur et traite la mise du joueur
 	 * @param choix montant voulu de mise
 	 */
-	
 	public void mise(int choix){
 		if(choix<=money){
 			//model.addMise(choix);
@@ -48,36 +49,49 @@ public class Player{
 	 * @param deck avec lequel joue le joueur
 	 */
 	public void recoitCarte(Deck deck){
-		this.main.ajouteCarte(deck);
+		this.hand.ajouteCarte(deck);
 	}
+	
 	/**
-	 * retourne la valeur de money
+	 * retourne combien possede le joueur
 	 * @return
 	 */
 	public int getMoney() {
 		return money;
 	}
+
 	/**
-	 * atribue une valeur a money
+	 * atribue un montant d'argent au joueur
 	 * @param money 
 	 */
 	public void addMoney(int money) {
 		this.money += money;
 	}
+	
 	/**
-	 * retourne true si le joueur a gagné la manche false si il a perdu
-	 * @return
+	 * fonction attribuant une valeur au portefeuille du joueur
+	 * @param money int reprécentant une valeur pour le portefeuille du joueur
+	 */
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+	/**
+	 * @return true si le joueur a gagné la manche 
+	 * @return false si le joueur a perdu la manche
 	 */
 	public boolean isWin() {
 		return win;
 	}
+
 	/**
 	 * atribue un valeur booléenne a win 
-	 * @param win true si gagnant false si perdant
+	 * @param win true si le joueur gagne false le joueur a perdu
 	 */
 	public void setWin(boolean win) {
 		this.win = win;
 	}
+	
 	/**
 	 * retourne le nom du joueur
 	 * @return
@@ -85,6 +99,7 @@ public class Player{
 	public String getNom() {
 		return nom;
 	}
+
 	/**
 	 * atribue un nom au joueur
 	 * @param nom
@@ -94,7 +109,7 @@ public class Player{
 	}
 	
 	/**
-	 * fonction retournant true si le joueur a finis la partie false si le joueur est encre en train de jouer
+	 * fonction retournant true si le joueur a finis la partie false si le joueur est encore en train de jouer
 	 * @return true si le joueur a finis la manch
 	 * @return false si le joueur est encore en train de jouer la manche
 	 */
@@ -104,6 +119,7 @@ public class Player{
 	
 	/**
 	 * fonction attribuant une valeur booleenne a fin
+	 * lorsque tt les joueurs on la valeur true la partie s'arrete
 	 * @param fin boolean a attribuer a fin
 	 */
 	public void setFin(boolean fin) {
@@ -130,24 +146,16 @@ public class Player{
 	 * fonction retournant l'object main du joueur
 	 * @return object main associer au joueur
 	 */
-	public Hand getMain() {
-		return main;
+	public Hand getHand() {
+		return hand;
 	}
 	
 	/**
 	 * fonction attribuant une main au joueur
 	 * @param main
 	 */
-	public void setMain(Hand main) {
-		this.main = main;
-	}
-	
-	/**
-	 * fonction attribuant une valeur au portefeuille du joueur
-	 * @param money int reprécentant une valeur pour le portefeuille du joueur
-	 */
-	public void setMoney(int money) {
-		this.money = money;
+	public void setHand(Hand main) {
+		this.hand = main;
 	}
 	
 	/**
@@ -156,6 +164,6 @@ public class Player{
 	 * @return String represantant le joueur
 	 */
 	public String toString(Player joueur){
-		return(main.toString(joueur)+"\nnom: "+joueur.nom+"\nmoney: "+joueur.money);
+		return(getHand().toString(joueur)+"\nnom: "+joueur.nom+"\nmoney: "+joueur.money);
 	}
 }
