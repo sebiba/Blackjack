@@ -11,9 +11,9 @@ import model.Carte;
 import model.Deck;
 import model.Game;
 import model.Player;
+import network.Chat;
 import view.BlackjackVue;
 import view.BlackjackVueGui;
-import reseaux.Chat;
 
 public class GameController {
 	Game model; 
