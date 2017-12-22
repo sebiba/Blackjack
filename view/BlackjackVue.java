@@ -2,8 +2,9 @@ package view;
 
 import java.util.Observer;
 
-import model.Game;
 import controller.GameController;
+import model.Game;
+import model.Player;
 
 public abstract class BlackjackVue implements Observer{
 	
@@ -17,11 +18,11 @@ public abstract class BlackjackVue implements Observer{
 	public BlackjackVue(Game model,GameController controller) {
 		this.model = model;
 		this.controller = controller;
-		// TODO : Connexion entre la vue et le modele
 		this.model.addObserver(this);
 	}
 	
 	public abstract void affiche(String string) ;
 	public abstract void menu();
 	public abstract String input(String texte);
+	public abstract void printJoueur(Player player);
 }

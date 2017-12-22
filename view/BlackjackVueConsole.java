@@ -1,9 +1,7 @@
 package view;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
@@ -37,6 +35,7 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 		int nbrJoueur=0;
 		ArrayList<String> joueurNom =new ArrayList<String>();
 		joueurNom.clear();
+		ArrayList<String> nom = new ArrayList<String>();
 		switch(menu){
 			case "1":controller.ReadFiles("rules.txt");
 					input("appuyez sur une touche pour continuer");
@@ -47,7 +46,7 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 					update(null, null);
 					controller.pioche();
 				break;
-			case "3":ArrayList<String> nom = new ArrayList<String>();
+			case "3":
 					nbrJoueur =Integer.parseInt(input("combien de joueurs vont jouer?"));
 					for(int cpt=0;cpt<nbrJoueur;cpt++){
 						nom.add(input("entrer le nom du "+(cpt+1)+" joueur"));
@@ -57,8 +56,9 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 					controller.pioche();
 				break;
 			case "4":nbrJoueur=2;
+						nom.add(input("entrer le nom du joueur: "));
 					try {
-						controller.multi(nbrJoueur);
+						controller.multi(nom);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -133,7 +133,7 @@ public class BlackjackVueConsole extends BlackjackVue implements Observer {
 	 * fonction affichant les données des joueurs
 	 * @param joueur dont on veut les données
 	 */
-	private void printJoueur(Player joueur){
+	public void printJoueur(Player joueur){
 		affiche(joueur.toString(joueur));
 	}
 	

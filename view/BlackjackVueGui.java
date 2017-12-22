@@ -3,12 +3,12 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -18,22 +18,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.KeyStroke;
 
 import controller.GameController;
 import model.Game;
 import model.Player;
 
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Color;
 import javax.swing.JTextArea;
 import java.awt.SystemColor;
 
 public class BlackjackVueGui extends BlackjackVue implements Observer{
-	JFrame f = new JFrame("blackjack");
+	public static JFrame f = new JFrame("blackjack");
 	JPanel panel;
 	JMenuBar menuBar;
 	JMenu menu;
@@ -45,10 +40,10 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 	JLabel NomJoueur;
 	JLabel Argent;
 	JTextArea txtrCarte;
-	JButton btnMise;
+	public static JButton btnMise;
 	JButton btnFin;
 	JButton btnCarte;
-	ArrayList<String> joueurNom =new ArrayList<String>();
+	ArrayList<String> joueurNom = new ArrayList<String>();
 	
 	/**
 	 * constructeur de la GUI construissant l'onglet menu avec les different choix avec des handlers associer pour lancer les différent type de partie
@@ -60,6 +55,7 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		f.setSize(400, 400);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.getContentPane().setLayout(null);
+		f.setResizable(false);
 		panel = new JPanel();
 		//Create the menu bar.
 		menuBar = new JMenuBar();
@@ -123,6 +119,21 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		menu.add(rbMenuItem_1);
 		
 		rbMenuItem_1 = new JRadioButtonMenuItem("multi");
+		rbMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnFin.setEnabled(true);
+				btnMise.setEnabled(true);
+				btnCarte.setEnabled(true);
+				ArrayList<String> nom = new ArrayList<String>();
+				nom.add(input("entrer le nom du joueur: "));
+				try {
+					controller.multi(nom);
+				} catch (IOException e) {
+					affiche("erreur dans le multijoueur");
+					e.printStackTrace();
+				}
+			}
+		});
 		rbMenuItem_1.setMnemonic(KeyEvent.VK_O);
 		group.add(rbMenuItem_1);
 		menu.add(rbMenuItem_1);
@@ -199,7 +210,6 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 	 */
 	@Override
 	public void menu() {
-		ArrayList<String> joueurNom =new ArrayList<String>();
 		panel.setBounds(0, 40, 382, 287);
 		f.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -222,6 +232,7 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 			public void actionPerformed(ActionEvent e) {
 				model.getJoueur().get(0).getHand().ajouteCarte(model.getDeck());
 				controller.setEtat(0);
+				btnMise.setEnabled(false);
 				update(null, null);
 			}
 		});
@@ -241,6 +252,7 @@ public class BlackjackVueGui extends BlackjackVue implements Observer{
 		
 		NomJoueur = new JLabel("Nom");
 		NomJoueur.setBounds(49, 34, 87, 16);
+		NomJoueur.setSize(150,50);
 		panel.add(NomJoueur);
 		
 		Argent = new JLabel("argent");
