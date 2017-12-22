@@ -1,8 +1,6 @@
 package model;
 
 import javax.swing.JOptionPane;
-import controller.GameController;
-import model.Game;
 /**
  * groupe 16 Blackjack
  * @author Sébastien Blacks
@@ -24,16 +22,23 @@ public class Player{
 		this.money=1500;
 		this.win=false;
 		this.nom=nom;
-		this.miseAct=0;
-		
+		this.miseAct=0;	
 	}
+	
+	public Player(int money, String nom){
+		this.money=money;
+		this.win=false;
+		this.nom=nom;
+		this.miseAct=0;	
+	}
+	
 	
 	/**
 	 * fonction verifiant si la mise voulue est plus grande que l'argent du joueur et traite la mise du joueur
 	 * @param choix montant voulu de mise
 	 */
 	public void mise(int choix){
-		if(choix<=money){
+		if(choix<=this.money){
 			//model.addMise(choix);
 			this.money=this.money-choix;
 			this.miseAct=choix;
@@ -156,6 +161,15 @@ public class Player{
 	 */
 	public void setHand(Hand main) {
 		this.hand = main;
+	}
+	
+	/**
+	 * fonction ressetant une main au joueur
+	 * @param main
+	 */
+	public void resetHand() {
+		this.hand = null;
+		this.hand = new Hand();
 	}
 	
 	/**

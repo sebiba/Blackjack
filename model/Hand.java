@@ -43,7 +43,7 @@ public class Hand{
 			this.as = as;
 		}
 		if(tot>21){
-			System.out.println("FINIS");
+			System.out.println("PERDU");
 			joueur.setFin(true);
 		}
 		string+=("total: "+tot+"\n");
@@ -117,6 +117,16 @@ public class Hand{
 	 */
 	public void setCartes(Carte[] cartes) {
 		this.cartes = cartes;
+	}
+	
+	/**
+	 * ajoute une carte définie au joueur
+	 * @param split numéro de la carte
+	 * @param famille corespond a la famille de la carte a ajouter en String
+	 */
+	public void addCartes(String split, String famille){
+		int nbrFamille = Carte.getFamilleNbr(famille);
+		this.cartes[getNbrCartes()]=new Carte(Integer.parseInt(split), nbrFamille);
 	}
 	
 	/**

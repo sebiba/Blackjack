@@ -69,6 +69,19 @@ public class Carte {
 	       default:       return "??";
 	    }
 	}
+		/**
+		 * 
+		 * @return la famille sous forme de String
+		 */
+		public static int getFamilleNbr(String famille) {
+		    switch (famille) {
+		       case "Piques":   return 0;
+		       case "Coeurs":   return 1;
+		       case "Carreaux": return 2;
+		       case "Trefles":  return 3;
+		       default:       return -1;
+		    }
+	}
 	
 	/**
 	 * 
