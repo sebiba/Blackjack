@@ -12,12 +12,14 @@ import model.Deck;
 import model.Game;
 import model.Player;
 import view.BlackjackVue;
+import view.BlackjackVueGui;
 import reseaux.Chat;
 
 public class GameController {
 	Game model; 
 	BlackjackVue vue;
 	public int etat=0;//etat 0= crée le joueur  1=doit miser 2=doit choisir carte
+	Chat chat;
 	BufferedReader keyboard;
 	boolean reseau=false;
 	
@@ -69,11 +71,10 @@ public class GameController {
 	 * @param nbJoueurs nombre de joueurs sur la partie
 	 * @throws IOException
 	 */
-	public void multi(int nbJoueurs) throws IOException{
-		ArrayList<String> nom = new ArrayList();
-		nom.add(input("entrer le nom du joueur: "));
+	public void multi(ArrayList<String> nom) throws IOException{
 		model.ClearJoueur();
 		model.addJoueur(nom);//instantiation d'un joueur
+		vue.printJoueur(model.getJoueur().get(0));
 		ChatConsole(model.getJoueur().get(0));//connection a l'autre
 		
 	}
@@ -92,11 +93,50 @@ public class GameController {
 			}
 		}
 		vue.affiche("le gagnant est "+model.getJoueur().get(model.getScore()[1]).getNom());
+		model.getJoueur().get(model.getScore()[1]).setMoney(model.getJoueur().get(model.getScore()[1]).getMoney()+(2*model.getMise()));
+				
+		rejoue=vue.input("\n\nVoulez vous jouer une autre partie (o/n) ");
+		BlackjackVueGui.btnMise.setEnabled(true);
+		switch(rejoue.toLowerCase()){
+		case "o":setEtat(0);
+				model.setMise(0);
+				for(Player player : joueur){
+					player.resetHand();
+					player.setFin(false);
+					player.getHand().ajouteCarte(model.getDeck());
+					player.getHand().ajouteCarte(model.getDeck());
+				}
+				vue.update(null, null);
+			break;
+		case "n":vue.menu();
+			break;
+		default:System.out.println("mauvais choix...");
+				pioche();
+			break;
+		}
+	}
+	
+	/**
+	 * fonction calculant les score de chaque joueur de la partie
+	 * @param arraylist de joueurs de la partie en cours
+	 */
+	public void resultReseau(ArrayList<Player> joueur, boolean reseau, Chat chat){
+		String rejoue="";
+		for(int i=0;i<joueur.size();i++){
+			vue.affiche("nom: "+joueur.get(i).getNom()+"\tscore: "+joueur.get(i).getHand().getTot());
+			chat.sendMessage("nom: "+joueur.get(i).getNom()+"\tscore: "+joueur.get(i).getHand().getTot());
+			if(model.getScore()[0]<joueur.get(i).getHand().getTot()){
+				model.getScore()[0]=joueur.get(i).getHand().getTot();
+				model.getScore()[1]=i;
+			}
+		}
+		vue.affiche("le gagnant est "+model.getJoueur().get(model.getScore()[1]).getNom());
+		chat.sendMessage("le gagnant est "+model.getJoueur().get(model.getScore()[1]).getNom());
 		model.getJoueur().get(model.getScore()[1]).setMoney(model.getJoueur().get(model.getScore()[1]).getMoney()+model.getMise());
 				
-		rejoue=vue.input("\n\nVoulez vous jouer une autre partie (y/n) ");
+		rejoue=vue.input("\n\nVoulez vous jouer une autre partie (o/n) ");
 		switch(rejoue.toLowerCase()){
-		case "y":setEtat(0);
+		case "o":setEtat(0);
 				vue.update(null, null);
 				pioche();
 			break;
@@ -162,9 +202,9 @@ public class GameController {
 		Deck deck = model.getDeck();
 		for(Player joueur : joueurs){
 			if(joueur.isFin()==false){
-				String newCarte=input(joueur.getNom()+" voulez vous une carte? (y/n) ");
+				String newCarte=input(joueur.getNom()+" voulez vous une carte? (o/n) ");
 				switch(newCarte.toLowerCase()){
-				case "y":System.out.println("OK voici une carte");
+				case "o":System.out.println("OK voici une carte");
 						joueur.getHand().ajouteCarte(deck);
 						if(reseau==false){
 							setEtat(3);
@@ -208,14 +248,7 @@ public class GameController {
 	 * @return String de ce que l'utilisateur à entré
 	 */
 	public String input(String texte){
-		vue.affiche(texte);
-		String entre = "";
-		try {
-			entre = keyboard.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return entre;
+		return vue.input(texte);
 	}
 
 	/**
@@ -236,20 +269,32 @@ public class GameController {
 		this.etat = etat;
 	}
 	
-	
+	/**
+	 * fonction construisant un objet joueur a partir d'un string composé d'un nom et d'un score total
+	 * séparé par un "/"
+	 * @param player String composé d'un nom et d'un score tot séparé par un "/"
+	 * @return object joueur
+	 */
+	public Player buildPlayer(String player){
+		//player.replaceAll("\n", " ");
+		String[] data = player.split("/");
+		Player result = new Player(data[0]);
+		result.getHand().setTot(Integer.parseInt(data[1]));
+		return result;
+	}
 	/**
 	 * fonction lancant la communication reseaux
 	 * @param joueur local de la partie
 	 * @throws IOException 
 	 */
 	public void ChatConsole(Player joueur) throws IOException{
+		ArrayList<Player> classement = new ArrayList<Player>();
 		reseau = true;
-		String eberge = vue.input("heberger vous la partie?(y/n): ");
+		String eberge = vue.input("heberger vous la partie?(o/n): ");
 		boolean isServer=false;
 		String ip = "localhost";
-		int nbfin = 0;
 		switch(eberge.toLowerCase()){
-			case"y":isServer = (true);
+			case"o":isServer = (true);
 					vue.affiche("en attente du client...");
 				break;
 			case"n":isServer = (false);
@@ -258,33 +303,42 @@ public class GameController {
 			default:isServer=false;
 				break;
 		}
-		Chat chat = new Chat( isServer , 12345,ip);
+		chat = new Chat( isServer , 12345,ip);
+		vue.affiche("connection établie");
 		if(isServer){//-----------------------------------------serveur---------------------------------------------
 			launch(joueur, model.getDeck());
+			chat.sendMessage(joueur.toString(joueur));
+			vue.affiche("votre adversaire joue...");
+			String rcv = chat.waitForMessage();
 			do{
-				chat.sendMessage(joueur.toString(joueur));
-				
-				String rcv = chat.waitForMessage();
-					
-				vue.affiche("message du client: "+rcv);
-					
-				vue.affiche("\n\n"+joueur.toString(joueur));
+				vue.affiche(joueur.getHand().toString(joueur));
+					if(joueur.isFin()){
+						classement.add(joueur);
+						classement.add(buildPlayer(rcv));
+						resultReseau(classement, true, chat);
+					}
 				pioche();
-			}while(nbfin!=model.getMise());
+				vue.printJoueur(joueur);
+			}while(true);
 			
 		}else{//-------------------------------------------client-------------------------------------------------
 			String rcv="";
-			String data[]={"nom: ","argent: ","carte: "};
-			int cpt=0;
 			launch(joueur,model.getDeck());
-			do{
 			rcv = chat.waitForMessage();
+			do{
 			vue.affiche(rcv);
 			vue.affiche("\n\n"+joueur.toString(joueur));
+			if(joueur.isFin()){
+				chat.sendMessage(joueur.getNom()+"/"+joueur.getHand().getTot());
+				do{
+					rcv = chat.waitForMessage();
+					vue.affiche(rcv);
+				}while(true);
+				
+			}
 			pioche();
-			chat.sendMessage(joueur.toString(joueur));
-			
-			}while(rcv!="1"); // a revoir
+			vue.printJoueur(joueur);
+			}while(true); // a revoir
 		}
 	}
 	
